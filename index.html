@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>House tank Saturday</title>
+<script>document.documentElement.classList.add("js");</script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --faint: #8a8a8a;
+    --line: #e6e6e6;
+    --header: #f6f6f6;
+    --link: #3568d4;
+    --nav: #e7eef6;
+    --pill: #ececec;
+    --code-bg: #f8e6e6;
+    --code-ink: #9f3a3a;
+    --good: #17693f;
+    --tight: #8a5a12;
+    --bad: #8d2f2c;
+    --bar: 57px;
+    --serif: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  button, input, select { font: inherit; color: inherit; }
+  button { background: none; border: 0; padding: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  ::selection { background: #d6e2fa; }
+  h1, h2, h3, .panel, details { scroll-margin-top: calc(var(--bar) + 16px); }
+  .js .panel { display: none; }
+  .js .panel.active { display: block; }
+  p { margin: 0 0 0.8em; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; color: var(--ink); }
+  h1 { margin: 0; font-size: clamp(32px, 4vw, 44px); }
+  h2 { margin: 2em 0 0.45em; font-size: clamp(26px, 3vw, 32px); }
+  h3 { margin: 1.4em 0 0.35em; font-size: 22px; }
+  h4 { margin: 0 0 4px; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+  a { color: var(--link); }
+  code {
+    font-family: var(--mono);
+    font-size: 0.92em;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 0.08em 0.35em;
+    border-radius: 4px;
+  }
+  .note { color: var(--muted); }
+  .lede { margin: 12px 0 0; max-width: 62ch; font-size: 17px; }
+  .trade { color: var(--muted); font-size: 14px; }
+  #two-taps { scroll-margin-top: calc(var(--bar) + 16px); }
+  .explain-fig { margin: 8px 0 18px; max-width: 100%; }
+  .explain-fig img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fafafa;
+  }
+  .explain-fig figcaption {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 62ch;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--bar);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+  }
+  .top-left { justify-self: start; min-width: 0; }
+  .brand {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    min-height: 44px;
+    padding: 0 2px;
+  }
+  .top-pills { display: flex; gap: 2px; justify-self: center; }
+  .top-pills .tab {
+    color: var(--muted);
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    min-height: 32px;
+  }
+  .top-pills .tab[aria-selected="true"] { background: var(--pill); color: var(--ink); }
+  .top-right { justify-self: end; display: flex; align-items: center; gap: 4px; min-width: 0; }
+  .status-btn {
+    color: var(--muted);
+    font-size: 14px;
+    min-height: 44px;
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+  .status-btn[data-ready="yes"] { color: var(--good); }
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr) 220px;
+    align-items: start;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .sidenav {
+    grid-column: 1;
+    grid-row: 1;
+    position: sticky;
+    top: var(--bar);
+    max-height: calc(100vh - var(--bar));
+    overflow: auto;
+    border-right: 1px solid var(--line);
+    padding: 16px 12px 32px;
+  }
+  .search-wrap { position: relative; }
+  .search {
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 40px 8px 12px;
+    background: #fff;
+    font-size: 16px;
+  }
+  .search::placeholder { color: var(--faint); }
+  .kbd {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--faint);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 5px;
+    pointer-events: none;
+  }
+  .nav-label {
+    margin: 18px 10px 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .side {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    border-radius: 8px;
+    padding: 8px 10px;
+    min-height: 36px;
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .side:hover { background: #f6f6f6; }
+  .side[aria-selected="true"],
+  .side[aria-selected="true"]:hover { background: var(--nav); }
+  .drawer-head { display: none; }
+  .search-hits { margin-top: 10px; }
+  .search-hits a, #toc-nav a {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.35;
+    padding: 6px 2px;
+  }
+  .search-hits a:hover, #toc-nav a:hover { color: var(--link); }
+  .is-hidden, .hidden-item { display: none !important; }
+
+  main {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    padding: 28px 40px 80px;
+    font-size: 17px;
+  }
+  .toc {
+    grid-column: 3;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--bar) + 16px);
+    padding: 28px 16px 40px 8px;
+    align-self: start;
+  }
+  #toc-details > summary {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  #toc-details > summary::-webkit-details-marker { display: none; }
+  #toc-nav { max-height: calc(100vh - 140px); overflow: auto; margin-top: 8px; }
+  .crumb { margin: 0 0 8px; font-size: 13px; color: var(--faint); }
+  .crumb span { margin: 0 6px; }
+  .title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .copy-page, .quiet {
+    flex: none;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    min-height: 36px;
+    font-size: 13px;
+    color: #3a3a3a;
+  }
+  .quiet { min-height: 44px; padding: 8px 12px; font-size: 14px; }
+
+  table.sheet {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--line);
+    margin: 12px 0 18px;
+    font-size: 15px;
+  }
+  table.sheet th, table.sheet td {
+    text-align: left;
+    vertical-align: top;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    overflow-wrap: break-word;
+  }
+  table.sheet th:last-child, table.sheet td:last-child { border-right: 0; }
+  table.sheet tr:last-child td { border-bottom: 0; }
+  table.sheet th { background: var(--header); font-weight: 600; font-size: 14px; }
+  table.sheet .why { color: var(--muted); }
+  .tag { color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .item.is-done strong { text-decoration: line-through; color: #8a8a8a; }
+  .item.is-done .why { color: #9a9a9a; }
+  td.check { width: 44px; }
+  table.buy input, .checks input, .checkline input {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--link);
+  }
+  .pos-open { color: var(--good); font-weight: 700; }
+  .pos-shut { color: var(--bad); font-weight: 700; }
+
+  .fields { display: grid; gap: 8px; max-width: 420px; }
+  label.field { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+  input[type="text"], input[type="time"] {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .units {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 2px 0 8px;
+  }
+  .unit, .filter {
+    min-height: 44px;
+    padding: 8px 12px;
+    background: #fff;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .unit { border-right: 1px solid var(--line); border-radius: 0; }
+  .unit:last-child { border-right: 0; }
+  .unit[aria-pressed="true"], .filter[aria-pressed="true"] { background: var(--nav); color: var(--ink); }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  .filter { border-radius: 8px; }
+  .sizes { display: grid; gap: 12px; }
+  .verdict { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); max-width: 68ch; }
+  .verdict strong { display: block; font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 6px; }
+  .verdict[data-state="good"] strong { color: var(--good); }
+  .verdict[data-state="tight"] strong { color: var(--tight); }
+  .verdict[data-state="short"] strong { color: var(--bad); }
+  .banner { margin: 12px 0; color: var(--muted); max-width: 68ch; }
+  .banner.good { color: var(--good); }
+  .banner.bad { color: var(--bad); }
+  .progress { height: 4px; background: #eee; border-radius: 99px; overflow: hidden; margin: 8px 0 12px; max-width: 420px; }
+  .progress span { display: block; height: 100%; width: 0; background: var(--link); }
+  .checks { list-style: none; margin: 0; padding: 0; }
+  .checks .item { border-top: 1px solid var(--line); }
+  .checks label { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; min-height: 44px; }
+  .checks .why { display: block; color: var(--muted); font-weight: 400; margin-top: 4px; }
+  .roles { display: grid; gap: 16px; margin-top: 8px; }
+  .block { padding: 4px 0 8px; border-top: 1px solid var(--line); margin-top: 18px; }
+  .when { margin: 0 0 4px; color: var(--muted); font-size: 13px; font-weight: 600; }
+  .checkline { display: flex; gap: 10px; align-items: center; min-height: 44px; margin-top: 8px; font-weight: 600; }
+  .stop { margin: 10px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--bad); max-width: 68ch; }
+  .who { display: block; margin-bottom: 2px; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .steps { margin: 0; padding-left: 1.2em; }
+  .steps > li { margin: 16px 0; padding-left: 4px; }
+  .steps li.hot { border-left: 2px solid var(--line); padding-left: 12px; margin-left: -4px; }
+  details.trouble { border-top: 1px solid var(--line); }
+  details.trouble:last-of-type { border-bottom: 1px solid var(--line); }
+  details.trouble summary { min-height: 52px; padding: 14px 0; font-size: 17px; font-weight: 600; cursor: pointer; }
+  details.trouble ol { margin: 0 0 16px; padding-left: 1.2em; }
+  details.trouble li { margin: 8px 0; }
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  .backdrop { display: none; position: fixed; inset: var(--bar) 0 0 0; background: rgba(20, 20, 20, 0.28); z-index: 35; }
+
+  @media (min-width: 700px) {
+    .sizes { grid-template-columns: 1fr 1fr; }
+    .roles { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 961px) {
+    #toc-details > summary { pointer-events: none; margin-bottom: 4px; }
+    .nav-toggle, .drawer-head { display: none !important; }
+  }
+  @media (max-width: 960px) {
+    .topbar { display: flex; }
+    .top-pills { display: none; }
+    .top-right { margin-left: auto; }
+    .nav-toggle { display: inline-flex; }
+    .kbd { display: none; }
+    .search { padding-right: 12px; min-height: 44px; }
+    .layout { display: block; max-width: none; }
+    .sidenav {
+      position: fixed;
+      top: var(--bar);
+      left: 0;
+      bottom: 0;
+      width: min(320px, calc(100% - 48px));
+      max-height: none;
+      z-index: 40;
+      background: #fff;
+      transform: translateX(-105%);
+      transition: transform 160ms ease;
+      border-right: 1px solid var(--line);
+    }
+    body.nav-open .sidenav { transform: none; }
+    body.nav-open .backdrop { display: block; }
+    body.nav-open { overflow: hidden; }
+    .side { min-height: 44px; }
+    .drawer-head { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+    .toc { position: static; border-bottom: 1px solid var(--line); padding: 0 16px; }
+    #toc-details > summary { min-height: 44px; display: flex; align-items: center; }
+    #toc-nav { max-height: none; }
+    #toc-nav a { min-height: 44px; display: flex; align-items: center; }
+    main { padding: 20px 16px 64px; }
+    .status-btn { font-size: 13px; padding: 0 4px; }
+  }
+  @media (max-width: 720px) {
+    table.sheet thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      border: 0;
+    }
+    table.sheet,
+    table.sheet tbody,
+    table.sheet tr,
+    table.sheet td {
+      display: block;
+      width: 100%;
+    }
+    table.sheet { border: 0; }
+    table.sheet tr { padding: 12px 0; border-top: 1px solid var(--line); }
+    table.sheet td { border: 0; padding: 3px 0; }
+    table.buy tr.item { position: relative; padding: 14px 0 14px 48px; }
+    table.buy td.check { position: absolute; left: 0; top: 16px; width: 44px; }
+    table.buy td.check input { width: 28px; height: 28px; }
+    table.valves td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sidenav { transition: none; }
+  }
+  @media print {
+    .topbar, .sidenav, .toc, .backdrop, .filters, .noprint, .copy-page { display: none !important; }
+    .js .panel { display: block !important; }
+    .layout { display: block; max-width: none; }
+    main { padding: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="top-left">
+    <button class="brand" type="button" data-tab="plan">House tank</button>
+  </div>
+  <nav class="top-pills" aria-label="Sections">
+    <button class="tab" type="button" data-tab="plan" aria-selected="true">Plan</button>
+    <button class="tab" type="button" data-tab="buy" aria-selected="false">Buy</button>
+    <button class="tab" type="button" data-tab="day" aria-selected="false">Day</button>
+    <button class="tab" type="button" data-tab="build" aria-selected="false">Build</button>
+    <button class="tab" type="button" data-tab="safety" aria-selected="false">Safety</button>
+    <button class="tab" type="button" data-tab="trouble" aria-selected="false">Trouble</button>
+  </nav>
+  <div class="top-right">
+    <button class="status-btn" id="cut-pill" type="button" data-tab="plan" data-jump="gates" data-ready="no" aria-live="polite">Meter 0/6</button>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="sidenav">Sections</button>
+  </div>
+</header>
+<button class="backdrop" id="backdrop" type="button" aria-label="Close sections" tabindex="-1"></button>
+
+<div class="layout">
+  <aside class="sidenav" id="sidenav" aria-label="Sections">
+    <div class="drawer-head">
+      <button class="quiet" id="nav-close" type="button">Close</button>
+    </div>
+    <div class="search-wrap">
+      <input class="search" id="nav-search" type="text" placeholder="Search" aria-label="Search this sheet" autocomplete="off">
+      <span class="kbd" aria-hidden="true">⌘K</span>
+    </div>
+    <div id="search-hits" class="search-hits" hidden></div>
+    <p class="nav-label" data-group="before">Before the cut</p>
+    <button class="tab side" type="button" data-tab="plan" data-group="before" data-search="plan reach calculator gates meter height pressure tank tap shortcut" aria-selected="true">Plan</button>
+    <button class="tab side" type="button" data-tab="buy" data-group="before" data-search="buy list parts store sizes pump" aria-selected="false">Buy</button>
+    <button class="tab side" type="button" data-tab="day" data-group="before" data-search="day schedule hours roles time" aria-selected="false">Day</button>
+    <p class="nav-label" data-group="house">At the house</p>
+    <button class="tab side" type="button" data-tab="build" data-group="house" data-search="build pipes valves shortcut tank tap arrows order" aria-selected="false">Build</button>
+    <button class="tab side" type="button" data-tab="safety" data-group="house" data-search="safety rules meter ladder power" aria-selected="false">Safety</button>
+    <button class="tab side" type="button" data-tab="trouble" data-group="house" data-search="trouble leak spray late no water pump" aria-selected="false">Trouble</button>
+  </aside>
+
+  <aside class="toc">
+    <details id="toc-details">
+      <summary>On this page</summary>
+      <nav id="toc-nav" aria-label="On this page"></nav>
+    </details>
+  </aside>
+
+  <main id="main">
+    <section class="panel active" id="plan">
+      <p class="crumb">House tank <span aria-hidden="true">›</span> Plan</p>
+      <div class="title-row">
+        <h1 id="plan-title">The tank feeds the house</h1>
+        <button class="copy-page noprint" type="button" data-label="Copy page">Copy page</button>
+      </div>
+      <p class="lede">City water fills the elevated tank. A pump at the bottom gives the house its pressure.</p>
+      <p>The sketch gets that part right. It leaves out how the tank stops filling, how the pump survives grit and an empty tank, and how you put the house back on city water if the day runs long. Measure tonight. Cut only after the new parts are together.</p>
+
+      <h2 id="plan-path">Where the water goes</h2>
+      <table class="sheet">
+        <thead><tr><th>Place</th><th>What to remember</th></tr></thead>
+        <tbody>
+          <tr><td>After the meter</td><td>City water. Close this valve only for the tie-in. Leave the meter itself alone.</td></tr>
+          <tr><td>The climb</td><td>Water goes up to the tank, spills in through an air gap, and a float shuts it off. An overflow is the backup.</td></tr>
+          <tr><td>The pump</td><td>A full-size pipe comes down from the tank to the pump, then out to the house.</td></tr>
+          <tr><td>The shortcut</td><td>A pipe that skips the pump. An off pump is a closed door, so city water cannot walk through it. The shortcut stays closed on a normal day, and opens only when the pump is off.</td></tr>
+        </tbody>
+      </table>
+
+      <div id="two-taps">
+      <h2 id="plan-names">Two shutoffs you will mix up</h2>
+      <p>The <code>tank tap</code> is the fill valve. It is the shutoff on the pipe that climbs to the tank. Open means city water can go up into the tank. Closed means that climb is blocked, so you can work on the float without turning off the whole house. Think of it as the tap for filling the tank.</p>
+      <p>The <code>shortcut</code> tap is the bypass valve. It is a tap on a second pipe that goes around the pump. Open means city water can reach the house without touching the pump. Closed means that path is shut. On a normal day it stays closed.</p>
+
+      <h3 id="why-split">Why the split is there</h3>
+      <p>You may think water still flows through the pump when the pump is switched off. It does not.</p>
+      <p>Most automatic booster pumps have a little flap inside. When the pump is off, that flap shuts. The pump is a closed door. City water cannot walk through it to the house.</p>
+      <p class="trade">Plumbers call that flap a check valve. A one-way valve on the pump's way out is another closed door.</p>
+      <p>Even a cheap pump with no flap is still a blockage. The fan inside blocks the pipe. A little water might seep. The pump can spin backward. The taps do not get real pressure. That is not a path you can use.</p>
+      <figure class="explain-fig">
+        <img src="images/pump-is-a-door.jpg" alt="Pump switched off. City water stops at a closed flap inside the pump. The house side of the pipe is dry.">
+        <figcaption>Pump off. The flap inside is shut, so city water stops at the pump.</figcaption>
+      </figure>
+      <p>After the change, the house has two possible paths.</p>
+      <ol>
+        <li>Through the pump. That path only works while the pump is on and pushing.</li>
+        <li>The shortcut around the pump. An open pipe with a tap. That path works with the pump unplugged, because the water never goes through the pump.</li>
+      </ol>
+      <p>The shortcut is not there to help the pump. It is there for the hours the pump is off, broken, or you ran out of daylight.</p>
+      <figure class="explain-fig">
+        <img src="images/normal-day.jpg" alt="Normal day. The shortcut tap is closed. The pump is on. Water goes from the tank, through the pump, to the house.">
+        <figcaption>A normal day. The shortcut tap is closed, and the pump pushes tank water to the house.</figcaption>
+      </figure>
+      <figure class="explain-fig">
+        <img src="images/shortcut-open.jpg" alt="Backup day. The pump is unplugged. The shortcut tap is open. City water goes around the pump and into the house.">
+        <figcaption>A backup day. The pump is unplugged, and city water goes around it through the open shortcut.</figcaption>
+      </figure>
+      <p>Open the shortcut only in this order.</p>
+      <ol>
+        <li>Unplug the pump.</li>
+        <li>Close the tap on the pump's way out.</li>
+        <li>Open the shortcut.</li>
+      </ol>
+      <p>Opening the shortcut while the pump is plugged in can push tank water back toward the street.</p>
+
+      <h3 id="skip-shortcut">When you can skip it</h3>
+      <p>You can skip the shortcut if you accept this: every tap stops whenever the pump is off, or the power is out.</p>
+      <p>Or you can put the old city-to-house pipe back before dark, and add the shortcut later.</p>
+      <p>Once the house is fed only through the pump, a dead pump means no water until you cut pipe again.</p>
+      </div>
+
+      <h2 id="calc-card">Can city water reach the tank?</h2>
+      <p class="note">Height is from the meter up to where water spills into the tank. Pressure is the gauge with the other taps closed. Feet of height ÷ <code>2.31</code> = psi to reach. You want about 5 psi spare.</p>
+      <div class="fields">
+        <label class="field">Height
+          <input id="height" data-field="height" inputmode="decimal" autocomplete="off" placeholder="for example 6">
+        </label>
+        <div class="units" role="group" aria-label="Height unit">
+          <button class="unit" type="button" data-unit-group="height" data-unit="ft" aria-pressed="true">Feet</button>
+          <button class="unit" type="button" data-unit-group="height" data-unit="m" aria-pressed="false">Meters</button>
+        </div>
+        <label class="field">Gauge
+          <input id="pressure" data-field="pressure" inputmode="decimal" autocomplete="off" placeholder="for example 25">
+        </label>
+        <div class="units" role="group" aria-label="Pressure unit">
+          <button class="unit" type="button" data-unit-group="pressure" data-unit="psi" aria-pressed="true">psi</button>
+          <button class="unit" type="button" data-unit-group="pressure" data-unit="bar" aria-pressed="false">bar</button>
+          <button class="unit" type="button" data-unit-group="pressure" data-unit="kgcm" aria-pressed="false">kg/cm²</button>
+        </div>
+      </div>
+      <div class="verdict" id="verdict" data-state="empty" aria-live="polite">
+        <strong>Enter both numbers.</strong>
+        <span id="verdict-body">Feet of height ÷ 2.31 = psi to reach the tank. For meters, turn them into feet first (× 3.28). You want about 5 psi, or 0.3 bar, more than that, so a bend and a neighbor's tap don't stall the fill.</span>
+      </div>
+
+      <h2 id="plan-changes">Before you close the meter</h2>
+      <h3 id="plan-bottom">Test the bottom valve before the store</h3>
+      <p>The open line under the tank is the pump's supply, and it already has a valve. Crack it into a bucket, standing to the side, then close it. It has to stop cleanly. A full elevated tank pushes hard. If the valve won't seal, Saturday is a valve job and the house stays on the city line.</p>
+
+      <h3 id="plan-climb">Prove the water can climb before you buy a second pump</h3>
+      <p>What lifts water up the tower is pressure. A fatter pipe changes how fast the tank fills once the water can reach the top. It does not make a weak line climb higher. Screw a gauge on a hose bibb, close the other taps, and read it. You can also mark the tank level tonight and look again when the neighborhood is quiet.</p>
+      <p>A slow fill is a win, if it arrives. The tank is the storage. The pump is the shower pressure. Buy the second pump only when the number says the city line falls short of the inlet.</p>
+
+      <h3 id="plan-float">Give the tank a float, an overflow, and a gap of air</h3>
+      <p>Close the tank tap when you work on the float. That is the fill valve, the shutoff on the pipe that climbs to the tank. The rest of the house can stay on.</p>
+      <p>When the neighborhood goes quiet, city pressure rises and the tank will keep filling. A float valve shuts it off. An overflow, at least as big as the fill pipe, is the backup when the float sticks. Point it where you can see it, away from the tower legs and away from the pump's outlet.</p>
+      <p>End the fill pipe above the overflow, with open air between the pipe and the water. The float belongs up there too, so it can shut the water off and still let it drop through that gap. If city pressure drops, a pipe sealed under the water can let the neighborhood line suck from your tank. The lid keeps dirt out and stays loose enough for the tank to breathe. Use a coarse screen. A fine one clogs, and then you have no overflow.</p>
+
+      <h3 id="plan-inlet">Keep the pump's inlet fat, and strain the water</h3>
+      <p>The high tank is doing you a favor. Water sits in the pump, so you don't need a foot valve to keep it primed. You still want a one-way valve on the way out, so the house pipes don't fall backward through the pump when it stops. A lot of automatic controllers already have that valve inside. Read the box before you buy a second one.</p>
+      <p>The bottom of an old tank holds grit. A strainer with the cap hanging down catches it. Keep every pipe from the tank to the pump the same size as the pump inlet. Stepping down to half-inch on that side makes the pump gasp, and that sound is the impeller tearing itself up. If the house pipe is smaller, do the one reduction on the house side of the pump.</p>
+
+      <h3 id="plan-shortcut">Shortcut around the pump</h3>
+      <p>A tee after the meter. A tee before the house. A shutoff between them. That shutoff is the shortcut tap.</p>
+      <p>The pump is a closed door when it is off. City water cannot walk through it. The pictures are above, under Two shutoffs.</p>
+      <p>If the pump is not ready: unplug the pump, close the tap on the pump's way out, then open the shortcut. Opening the shortcut while the pump is plugged in can push tank water back toward the street.</p>
+
+      <h3 id="plan-outlet">Use an outlet that trips, under a cover</h3>
+      <p>Press Test. The outlet should go dead. Press Reset. Power should come back. If it stays dead, that outlet is not the pump's power. Outside, the cover has to close over the cord, and the cord should dip below the outlet so rain drips off the loop. Match the pump voltage to the outlet. If feeding it means opening a wall or running a new circuit, that part waits for an electrician. Saturday can still be the pipes.</p>
+
+      <h3 id="plan-cut">Unscrew the joint. Cut plastic with a cutter</h3>
+      <p>A lot of these connections come apart with two wrenches. Try that before any blade. On plastic, a ratchet cutter leaves a square end a fitting can grab. If the pipe is steel and nothing else fits, a hacksaw is the calmer cut. Work on your side of the meter valve. The meter belongs to the water company.</p>
+      <p>Build the new parts while the house still has water. The shutdown is the short window at the end, not step two. Thread tape is for screw threads. Glue joints get primer and cement, and the can tells you how long to wait. Push fittings or unions on the two tie-ins are what let you undo a mistake the same day.</p>
+
+      <h2 id="gates">Close the meter only when these are true</h2>
+      <p class="note">Checks save on this phone. The house still has water until you choose to close that valve.</p>
+      <ul class="checks">
+        <li class="item" data-band="gate"><label><input type="checkbox" data-id="g1"><span><strong>The tank can fill, or you have a fill pump and a float switch.</strong><span class="why" id="g1-why">Use the calculator, or a mark on the tank that rose while you waited.</span></span></label></li>
+        <li class="item" data-band="gate"><label><input type="checkbox" data-id="g2"><span><strong>The bottom valve opens, closes, and stays closed.</strong><span class="why">You proved it with a bucket, from the side.</span></span></label></li>
+        <li class="item" data-band="gate"><label><input type="checkbox" data-id="g3"><span><strong>The new parts are fitted together before the shutdown.</strong><span class="why">Pump, strainer, valves, shortcut, float, overflow. Arrows already checked.</span></span></label></li>
+        <li class="item" data-band="gate"><label><input type="checkbox" data-id="g4"><span><strong>The outlet trips, then comes back.</strong><span class="why">Test, then Reset. If it stays dead, find a different protected outlet.</span></span></label></li>
+        <li class="item" data-band="gate"><label><input type="checkbox" data-id="g5"><span><strong>The shortcut shutoff is in your hand.</strong><span class="why">That is the bypass valve, the shutoff on the shortcut pipe that skips the pump. It stays closed while the pump is plugged in. Both of you know that.</span></span></label></li>
+        <li class="item" data-band="gate"><label><input type="checkbox" data-id="g6"><span><strong>One person owns the meter and will not leave it.</strong><span class="why">Every valve change gets called out loud. The other person answers before it moves.</span></span></label></li>
+      </ul>
+      <p class="banner" id="gate-banner">Leave the meter open. The house still has water.</p>
+    </section>
+
+    <section class="panel" id="buy">
+      <p class="crumb">House tank <span aria-hidden="true">›</span> Buy</p>
+      <div class="title-row">
+        <h1 id="buy-title">What to buy</h1>
+        <button class="copy-page noprint" type="button" data-label="Copy page">Copy page</button>
+      </div>
+      <p class="lede">Write the sizes down before you pay. Check off anything already in the truck.</p>
+
+      <h2 id="buy-sizes">Sizes first</h2>
+      <p>Your sketch already has the pump, the pipe, and maybe a one-way valve. Keep those. The filter "Still to get" is what you carry to the counter.</p>
+      <p class="note">Buy the pump before the last fittings, and hold every thread up to the real ports. Threads that start by hand are the right threads. A hard bind means they don't match. Forcing one cracks the pump.</p>
+      <div class="sizes">
+        <label class="field">Meter pipe<input data-field="meterSize" autocomplete="off" placeholder="3/4 in thread"></label>
+        <label class="field">Tank outlet<input data-field="tankOut" autocomplete="off" placeholder="1 in thread"></label>
+        <label class="field">House pipe<input data-field="houseSize" autocomplete="off" placeholder="1/2 in slip"></label>
+        <label class="field">Pump in / out<input data-field="pumpPorts" autocomplete="off" placeholder="from the box"></label>
+        <label class="field">Voltage<input data-field="voltage" autocomplete="off" placeholder="match the outlet"></label>
+        <label class="field">Fill pipe you'll buy<input data-field="fillSize" autocomplete="off" placeholder="same as the climb"></label>
+      </div>
+      <p id="size-line" class="note" style="margin-top:10px" aria-live="polite">Write the sizes down before you pay. A valve in the wrong size is a second trip.</p>
+      <p class="note">Read the printing on the pipe. If it says 1/2, 3/4, 1, or 20, 25, 32, ask for that. Smooth ends are for cement. Threads get tape. Steel looks gray. Copper looks brown. If the pipe is the fused green or white kind, or black poly, cement will not hold it. Ask for the adapter made for that pipe.</p>
+
+      <h2 id="buy-shelf">On the pump shelf, before you pay</h2>
+      <p>Tell the clerk: the tank is above the pump, the house pipes are small, and you want a house pump that stops when the taps close and stops if the tank is empty. A huge pump will find every weak joint in the walls.</p>
+      <p>If the box already includes a one-way valve, skip an extra one on the pump. If it says nothing, buy one, arrow toward the house, and put any shutoff after the controller. The city-side one-way valve is separate. Buy that either way.</p>
+
+      <h2 id="buy-names">The tank tap and the shortcut</h2>
+      <p>The <code>tank tap</code> is the fill valve. It is the shutoff on the pipe that climbs to the tank. Open means city water can go up into the tank. Closed means that climb is blocked, so you can work on the float without turning off the whole house. Think of it as the tap for filling the tank.</p>
+      <p>The <code>shortcut</code> shutoff is the bypass valve. It is the shutoff on the shortcut pipe that skips the pump and sends city water straight to the house. On a normal day it stays closed, because the pump should be the thing feeding the house. You open it only as a backup, and only in this order: unplug the pump, close the valve on the pump's way out, then open the bypass. If the bypass is open while the pump is still plugged in, the pump can push tank water backward toward the street.</p>
+      <p>A fill pump is a different object. It is a second, smaller pump you buy only if city water cannot climb. It is not the tank tap.</p>
+
+      <p class="banner" id="short-banner">Fill in the calculator before you buy a second pump.</p>
+
+      <div class="filters noprint" role="group" aria-label="Filter the list">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter" type="button" data-filter="open" aria-pressed="false">Still to get</button>
+        <button class="filter" type="button" data-filter="must" aria-pressed="false">Must</button>
+        <button class="filter" type="button" data-filter="tool" aria-pressed="false">Tools</button>
+        <button class="filter" type="button" data-filter="short" aria-pressed="false">If the water is short</button>
+      </div>
+      <p id="progress-label" aria-live="polite">0 of the must-buy items checked.</p>
+      <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+      <button class="quiet noprint" type="button" id="copy-btn" data-label="Copy what's left">Copy what's left</button>
+
+      <h2 id="buy-list">The list</h2>
+      <table class="sheet buy" id="list">
+        <thead>
+          <tr><th>Got it</th><th>Item</th><th>Why</th><th>Band</th></tr>
+        </thead>
+        <tbody>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-pump" type="checkbox" data-id="pump"></td><td class="name"><label for="ck-pump"><strong>Automatic booster pump</strong></label></td><td class="why">Sits below the tank. Stops when no tap is open, and stops if it runs dry. Voltage matches the outlet. Modest house size, because old half-inch lines don't want a fire pump.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-city-check" type="checkbox" data-id="city-check"></td><td class="name"><label for="ck-city-check"><strong>One-way valve for the city side</strong></label></td><td class="why">Same size as the meter pipe. Arrow points away from the meter. A swing check steals less pressure than a spring check, which matters if the climb is tight. Hinge on top.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-strainer" type="checkbox" data-id="strainer"></td><td class="name"><label for="ck-strainer"><strong>Strainer</strong></label></td><td class="why">Pump inlet size. Cap hangs down so grit falls into the part you can open over a bucket. Arrow toward the pump.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-valves" type="checkbox" data-id="valves"></td><td class="name"><label for="ck-valves"><strong>Four ball valves</strong></label></td><td class="why">Quarter-turn. Match the pipe you wrote down. The tank's existing bottom valve stays. Buy the tank tap (fill valve), a shutoff on the pump inlet, a shutoff on the pump's way out, and the shortcut (bypass valve). Open and closed are in the section above.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-tees" type="checkbox" data-id="tees"></td><td class="name"><label for="ck-tees"><strong>Two tees</strong></label></td><td class="why">One after the meter, where the climb and the shortcut split. One before the house, where the shortcut joins the pump.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-float" type="checkbox" data-id="float"></td><td class="name"><label for="ck-float"><strong>Float valve</strong></label></td><td class="why">Sized to the fill pipe. It shuts the fill while the water is still below the overflow.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-overflow" type="checkbox" data-id="overflow"></td><td class="name"><label for="ck-overflow"><strong>Overflow fitting, elbow, and pipe</strong></label></td><td class="why">At least as big as the fill. Aimed where you'll notice it running, and away from the tower legs and the outlet.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-screen" type="checkbox" data-id="screen"></td><td class="name"><label for="ck-screen"><strong>Lid and a coarse screen</strong></label></td><td class="why">Skip the lid if the tank already has one. The screen keeps mosquitoes out without sealing the overflow shut.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-flex" type="checkbox" data-id="flex"></td><td class="name"><label for="ck-flex"><strong>Two flexible steel water lines</strong></label></td><td class="why">Pump thread size, long enough to sit in a soft bend. They let you remove the pump later. Buy them at the same shelf as the pump.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-pipe" type="checkbox" data-id="pipe"></td><td class="name"><label for="ck-pipe"><strong>Pressure pipe, elbows, and couplings</strong></label></td><td class="why">Drinking-water pressure pipe, the length you measured plus a little extra. Add one reducing fitting only if the house pipe is smaller than the pump outlet. That reduction happens after the pump, one time.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-straps" type="checkbox" data-id="straps"></td><td class="name"><label for="ck-straps"><strong>Pipe straps and screws</strong></label></td><td class="why">The riser hangs on the tower, not on the tank fitting. The pump should not be what holds the ground pipes up.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-tape" type="checkbox" data-id="tape"></td><td class="name"><label for="ck-tape"><strong>Thread tape, two rolls</strong></label></td><td class="why">For screw threads. Wrap it the way the fitting turns on, three or four passes, and leave the first thread bare.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-spares" type="checkbox" data-id="spares"></td><td class="name"><label for="ck-spares"><strong>Spare elbows and couplings</strong></label></td><td class="why">Two extra elbows and two extra couplings in the size you're using. One will be short or cracked. This is the second store trip you don't take.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-dryfloat" type="checkbox" data-id="dryfloat"></td><td class="name"><label for="ck-dryfloat"><strong>Plug-in low-water float, if the pump needs it</strong></label></td><td class="why">Check this off if the pump box says it stops when it runs dry. If the box is quiet, buy the piggyback kind: it plugs into the outlet, and the pump plugs into it. No splicing.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-gauge" type="checkbox" data-id="gauge"></td><td class="name"><label for="ck-gauge"><strong>Hose-bibb pressure gauge</strong></label></td><td class="why">The whole second-pump decision sits on this number. Check it off if you already own one and you've written the reading down.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-cutter" type="checkbox" data-id="cutter"></td><td class="name"><label for="ck-cutter"><strong>Ratchet cutter for plastic pipe</strong></label></td><td class="why">Square ends. If you already know the tie-in is steel, a hacksaw instead.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-wrenches" type="checkbox" data-id="wrenches"></td><td class="name"><label for="ck-wrenches"><strong>Two adjustable wrenches and pliers</strong></label></td><td class="why">One wrench holds, one turns. That's how threaded joints come apart without twisting the pump.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-undo" type="checkbox" data-id="undo"></td><td class="name"><label for="ck-undo"><strong>Couplings you can undo</strong></label></td><td class="why">Unions, or push fittings rated for your pipe and for outdoor pressure, on the meter tie-in and the house tie-in. Glue is for runs you assemble early and leave alone.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-ppe" type="checkbox" data-id="ppe"></td><td class="name"><label for="ck-ppe"><strong>Glasses, gloves, marker, rags, bucket, light</strong></label></td><td class="why">Eyes on for any cut. The bucket is for the tank flush and for the joint you open.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-cement" type="checkbox" data-id="cement"></td><td class="name"><label for="ck-cement"><strong>Primer and cement, only if you must glue</strong></label></td><td class="why">Drinking-water rated. Read the wait time on the can before you leave the store. If the can wants hours, use a threaded or push joint on anything that has to hold water today.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-rcd" type="checkbox" data-id="rcd"></td><td class="name"><label for="ck-rcd"><strong>Plug-in ground-fault protector</strong></label></td><td class="why">Only if the outlet fails the Test button. This is the device that trips when electricity leaks toward wet ground.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-cover" type="checkbox" data-id="cover"></td><td class="name"><label for="ck-cover"><strong>Weather cover that closes over a plugged-in cord</strong></label></td><td class="why">Only if the outlet sits in the rain. Skip it if the outlet is already under a real roof and has a working cover.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-paver" type="checkbox" data-id="paver"></td><td class="name"><label for="ck-paver"><strong>A paver for the pump</strong></label></td><td class="why">Flat, off the mud, so the pump isn't standing in the overflow puddle. Rubber feet on the pump are enough vibration control for Saturday.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-rope" type="checkbox" data-id="rope"></td><td class="name"><label for="ck-rope"><strong>A rope</strong></label></td><td class="why">The person on the ground sends tools up. The person climbing keeps a hand free.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="tool"><td class="check"><input id="ck-garden" type="checkbox" data-id="garden"></td><td class="name"><label for="ck-garden"><strong>Shovel, lopper, bags, garden gloves</strong></label></td><td class="why">For the plants in the way. Check these off if they're already in the shed. Keep the debris off the meter.</td><td class="tag">Tool</td></tr>
+          <tr class="item" data-band="short"><td class="check"><input id="ck-fillpump" type="checkbox" data-id="fillpump"></td><td class="name"><label for="ck-fillpump"><strong>A smaller pump to push city water up</strong></label></td><td class="why">Only if the calculator says the city line can't reach. This one fills the tank. It does not feed the house, and it is not the tank tap. If you discover this at noon, it is fine to stop and do it next week.</td><td class="tag">If water is short</td></tr>
+          <tr class="item" data-band="short"><td class="check"><input id="ck-fillfloat" type="checkbox" data-id="fillfloat"></td><td class="name"><label for="ck-fillfloat"><strong>Piggyback float switch for that pump</strong></label></td><td class="why">Stops the fill pump when the tank is full. A fill pump without this runs until it burns or the tower is washing itself.</td><td class="tag">If water is short</td></tr>
+          <tr class="item" data-band="short"><td class="check"><input id="ck-fillcheck" type="checkbox" data-id="fillcheck"></td><td class="name"><label for="ck-fillcheck"><strong>One-way valve on the fill pump outlet</strong></label></td><td class="why">Arrow toward the tank, so the tank doesn't drain back through the fill pump.</td><td class="tag">If water is short</td></tr>
+          <tr class="item" data-band="short"><td class="check"><input id="ck-fillflex" type="checkbox" data-id="fillflex"></td><td class="name"><label for="ck-fillflex"><strong>Two flex lines for the fill pump</strong></label></td><td class="why">Same idea as the house pump. Soft bend, matching threads, bought at the same time.</td><td class="tag">If water is short</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel" id="day">
+      <p class="crumb">House tank <span aria-hidden="true">›</span> Day</p>
+      <div class="title-row">
+        <h1 id="day-title">The day</h1>
+        <button class="copy-page noprint" type="button" data-label="Copy page">Copy page</button>
+      </div>
+      <p class="lede">One person owns the meter. One person owns the tower.</p>
+
+      <h2 id="day-roles">Who does what</h2>
+      <p>Swap those jobs only in the morning, if one of you is happier on the ladder. After that, the meter person stays at the valve during the shutdown. Tell anyone else in the house to leave the taps alone until you say so. Tape a note on the meter: working, leave it.</p>
+      <p>The <code>shortcut</code> shutoff is the bypass valve. It is the shutoff on the shortcut pipe that skips the pump and sends city water straight to the house. On a normal day it stays closed, because the pump should be the thing feeding the house. You open it only as a backup, and only in this order: unplug the pump, close the valve on the pump's way out, then open the bypass. If the bypass is open while the pump is still plugged in, the pump can push tank water backward toward the street.</p>
+      <label class="field" style="max-width:280px">What time do you actually start?
+        <input id="start-time" data-field="start" type="time" value="07:00">
+      </label>
+      <p id="end-line" style="margin-top:10px"></p>
+      <p class="banner" id="late-line" hidden></p>
+      <p class="note" id="day-gates" style="margin-top:10px"></p>
+
+      <h2 id="day-hours">The hours</h2>
+      <article class="block" id="day-decide" data-start="0" data-end="60">
+        <p class="when">First hour</p>
+        <h3>Decide before anyone cuts</h3>
+        <div class="roles">
+          <div class="role"><h4>On the ground</h4><p>Gauge on a hose bibb, other taps closed, number into the calculator. Photos of the meter outlet, the house pipe, and the outlet. Press Test, then Reset.</p></div>
+          <div class="role"><h4>On the tower</h4><p>Measure up to the inlet. Photos of the inlet, the bottom valve, and the lid. Crack the valve into a bucket from the side, then close it and watch it stop.</p></div>
+        </div>
+        <p class="stop">Stop the whole cutover if the valve won't seal or the water can't climb and you don't have a fill pump. The house stays as it is.</p>
+        <label class="checkline"><input type="checkbox" data-id="day-decide"> Done</label>
+      </article>
+      <article class="block" id="day-store" data-start="60" data-end="150">
+        <p class="when">Store</p>
+        <h3>Hardware store, both of you</h3>
+        <p>One person holds the list and the photos. The other holds parts against the pump. Threads start by hand. Voltage matches. If the calculator says the water reaches, the fill pump stays on the shelf.</p>
+        <label class="checkline"><input type="checkbox" data-id="day-store"> Done</label>
+      </article>
+      <article class="block" id="day-setup" data-start="150" data-end="195">
+        <p class="when">Setup</p>
+        <h3>Clear a place to stand</h3>
+        <div class="roles">
+          <div class="role"><h4>On the ground</h4><p>Paver lower than the tank outlet, under cover, close to the tank pipe. Cord reaches the outlet with a downward loop. Look up before anyone walks with a long pipe.</p></div>
+          <div class="role"><h4>On the tower</h4><p>Clear the climb. Keep bags off the meter and the bottom valve.</p></div>
+        </div>
+        <label class="checkline"><input type="checkbox" data-id="day-setup"> Done</label>
+      </article>
+      <article class="block" id="day-build-block" data-start="195" data-end="300">
+        <p class="when">Build</p>
+        <h3>Assemble it while the house still has water</h3>
+        <div class="roles">
+          <div class="role"><h4>On the ground</h4><p>Strainer, valves, flex lines, controller, shortcut, city one-way valve. Check the arrows. Support the pipes. Flush the tank bottom into a bucket before it reaches the pump.</p></div>
+          <div class="role"><h4>On the tower</h4><p>Float, overflow, coarse screen, lid. Strap the riser. The fill pipe ends above the overflow with air in between.</p></div>
+        </div>
+        <label class="checkline"><input type="checkbox" data-id="day-build"> Done</label>
+      </article>
+      <article class="block" id="day-eat" data-start="300" data-end="330">
+        <p class="when">Before the cut</p>
+        <h3>Eat, then walk the arrows</h3>
+        <p>Hungry people rush a cut. Point at each arrow together. Say the words you'll use: closed, open, clear. The meter person does not leave the valve once it closes.</p>
+        <label class="checkline"><input type="checkbox" data-id="day-eat"> Done</label>
+      </article>
+      <article class="block" id="day-cut" data-start="330" data-end="420">
+        <p class="when">Water off</p>
+        <h3>Tie it in</h3>
+        <p>Follow the shutdown steps on Build. During the tie-in the shortcut stays closed and the pump stays unplugged. If this block starts late, your job is to restore water, not to finish the pump: unplug the pump, close the valve on the pump's way out, open the shortcut, open the meter, and prove one faucet.</p>
+        <label class="checkline"><input type="checkbox" data-id="day-cut"> Done</label>
+      </article>
+      <article class="block" id="day-test" data-start="420" data-end="465">
+        <p class="when">Test</p>
+        <h3>Leaks first, then power</h3>
+        <div class="roles">
+          <div class="role"><h4>On the ground</h4><p>Open the meter slowly. Feel the joints. Prime until the water is solid. One faucet open, then plug in, then walk the house and the water heater.</p></div>
+          <div class="role"><h4>On the tower</h4><p>Watch the fill, the float, and the overflow. A running overflow means the float is stuck or the tank was already full.</p></div>
+        </div>
+        <label class="checkline"><input type="checkbox" data-id="day-test"> Done</label>
+      </article>
+      <article class="block" id="day-close" data-start="465" data-end="480">
+        <p class="when">Last half hour</p>
+        <h3>Label it and stop</h3>
+        <p>Do the shortcut drill once, then put it back. Unplug the pump. Close the valve on the pump's way out. Open the shortcut. Confirm a faucet still runs. Then close the shortcut, open the valve on the pump's way out, and plug the pump back in.</p>
+        <p>Tape labels. Photograph them. If you still have light, leave the shortcut closed, the pump plugged in, and one faucet proven. If the light is going, skip the polish: unplug the pump, close the valve on the pump's way out, open the shortcut, and go inside.</p>
+        <label class="checkline"><input type="checkbox" data-id="day-close"> Done</label>
+      </article>
+    </section>
+
+    <section class="panel" id="build">
+      <p class="crumb">House tank <span aria-hidden="true">›</span> Build</p>
+      <div class="title-row">
+        <h1 id="build-title">How it goes together</h1>
+        <button class="copy-page noprint" type="button" data-label="Copy page">Copy page</button>
+      </div>
+      <p class="lede">Two shutoffs get mixed up. Read them before you touch a wrench.</p>
+      <p>The <code>tank tap</code> is the fill valve. It is the shutoff on the pipe that climbs to the tank. Open means city water can go up into the tank. Closed means that climb is blocked, so you can work on the float without turning off the whole house. Think of it as the tap for filling the tank.</p>
+      <p>The <code>shortcut</code> shutoff is the bypass valve. It is the shutoff on the shortcut pipe that skips the pump and sends city water straight to the house. On a normal day it stays closed, because the pump should be the thing feeding the house. You open it only as a backup, and only in this order: unplug the pump, close the valve on the pump's way out, then open the bypass. If the bypass is open while the pump is still plugged in, the pump can push tank water backward toward the street.</p>
+
+      <h2 id="build-city">City side</h2>
+      <table class="sheet">
+        <thead><tr><th>Part</th><th>What it does</th><th>Sketch</th></tr></thead>
+        <tbody>
+          <tr><td>Meter valve</td><td>Close this for the tie-in. Leave the meter itself alone. Open it slowly the first time, with a faucet open so air has somewhere to go.</td><td>Already there</td></tr>
+          <tr><td>One-way valve</td><td>Arrow points away from the meter. On a swing check, the hinge sits on top so the little door can close. This sits before the split.</td><td>Add this</td></tr>
+          <tr><td>The split</td><td>One leg climbs to the tank. The other is the shortcut, and it runs across to join the house pipe after the pump.</td><td>Add this</td></tr>
+          <tr><td>Shortcut</td><td>The bypass valve, the shutoff on the shortcut pipe. Closed on a normal day. Open only after the pump is unplugged and the valve on the pump's way out is closed.</td><td>Add this</td></tr>
+          <tr><td>Tank tap</td><td>The fill valve, the shutoff on the pipe that climbs to the tank. Open, city water can go up into the tank. Closed, you can work on the float without turning off the whole house.</td><td>Add this</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="build-tower">On the tower</h2>
+      <table class="sheet">
+        <thead><tr><th>Part</th><th>What it does</th><th>Sketch</th></tr></thead>
+        <tbody>
+          <tr><td>The riser</td><td>Strapped to the tower. As few bends as you can. Two easy bends beat one sharp elbow when the pressure is tight. The pipe falls steadily from the tank down to the pump, with no high loop to trap air.</td><td>Already there</td></tr>
+          <tr><td>Float valve</td><td>Mount it at the top, above the water. It shuts the fill while the level is still below the overflow, and the water drops through the air gap. Move it by hand once before you leave, so you know it travels freely.</td><td>Add this</td></tr>
+          <tr><td>Air gap</td><td>The fill pipe stops above the overflow. About two finger-widths of open air is enough. Water pours in. It never seals under the surface.</td><td>Add this</td></tr>
+          <tr><td>The tank</td><td>A storage tank that can breathe. The lid keeps dirt and mosquitoes out and does not seal like a drum. This plan is for that kind of tank.</td><td>Already there</td></tr>
+          <tr><td>Overflow</td><td>As big as the fill, screened coarsely, visible from the ground, aimed away from the legs and the electrical outlet.</td><td>Add this</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="build-pump">The pump</h2>
+      <table class="sheet">
+        <thead><tr><th>Part</th><th>What it does</th><th>Sketch</th></tr></thead>
+        <tbody>
+          <tr><td>Tank valve</td><td>The one already on the open line under the tank. Full-size all the way to the pump. If this opening is tiny and the tank has a larger plugged hole, use the larger one.</td><td>Already there</td></tr>
+          <tr><td>Strainer and an inlet valve</td><td>Arrow toward the pump, cap down, with room to unscrew the cap into a bucket. The extra valve means you can clean it without climbing to the tank valve.</td><td>Add this</td></tr>
+          <tr><td>Pump</td><td>On the paver, below the tank. Flex lines in a soft bend, not pulled tight. Plastic threads get hand-tight plus a small nudge with the wrench, while the other wrench holds the pump so the housing doesn't twist.</td><td>Already there</td></tr>
+          <tr><td>Controller, then the outlet valve</td><td>Stand the controller the way the drawing on the box shows. A lot of them only count flow when it moves upward. Keep any shutoff on the house side of the controller. That shutoff is the valve on the pump's way out. If you added a separate one-way valve, its arrow points toward the house.</td><td>Already there</td></tr>
+          <tr><td>Outlet that trips</td><td>Test, then Reset. Drip loop. Cover if it's in the rain. Pump plugs in last, after water is sitting in it.</td><td>Add this</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="build-house">The house</h2>
+      <table class="sheet">
+        <thead><tr><th>Part</th><th>What it does</th><th>Sketch</th></tr></thead>
+        <tbody>
+          <tr><td>The joining tee</td><td>Pump water and the shortcut meet here, then use the pipe that already goes into the house. One reduction is allowed here if the house pipe is smaller.</td><td>Add this</td></tr>
+          <tr><td>House</td><td>The first time the pump runs, walk every tap and the water heater. Stronger pressure finds old joints. If the heater's relief pipe starts dumping, unplug the pump. That pipe is doing its job.</td><td>Already there</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="build-arrows">Four arrows, before the meter opens</h2>
+      <table class="sheet">
+        <thead><tr><th>Part</th><th>Where it points</th></tr></thead>
+        <tbody>
+          <tr><td>City one-way valve</td><td>Away from the meter. On a swing check, the hinge sits on top.</td></tr>
+          <tr><td>Strainer</td><td>Toward the pump. Cap hangs down.</td></tr>
+          <tr><td>Controller</td><td>The way the box draws, usually toward the house.</td></tr>
+          <tr><td>Any extra one-way valve at the pump</td><td>Toward the house. A backward arrow means the pump sounds busy and the house stays dry.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="build-order">Order of work</h2>
+      <ol class="steps">
+        <li>
+          <span class="who">Both · water still on</span>
+          <h3>Measure, photograph, test the valve</h3>
+          <p>Height, gauge, pipe sizes, outlet test. Bucket under the tank valve.</p>
+          <p class="stop">Stop if the valve won't seal.</p>
+        </li>
+        <li>
+          <span class="who">Both · water still on</span>
+          <h3>Shop with the photos</h3>
+          <p>Match threads to the pump in the store. Read the cement can if you're buying cement.</p>
+        </li>
+        <li>
+          <span class="who">Ground · water still on</span>
+          <h3>Set the pump</h3>
+          <p>Paver, shelter, short fall from the tank, cord with a drip loop to an outlet that trips.</p>
+        </li>
+        <li>
+          <span class="who">Tower · water still on</span>
+          <h3>Float, overflow, screen, straps</h3>
+          <p>Fill pipe ends above the overflow. Lid on, loose enough to breathe.</p>
+        </li>
+        <li>
+          <span class="who">Ground · water still on</span>
+          <h3>Fit the valves, strainer, shortcut, and flex lines</h3>
+          <p>Tape on threads only. Support the pipes. If a joint is glued, it gets glued now so the wait happens while you do the rest. Flush the tank bottom into a bucket until it runs clearer, then connect the strainer.</p>
+        </li>
+        <li class="hot">
+          <span class="who">Both · water off</span>
+          <h3>Close the meter and tie in</h3>
+          <p>Faucet open until the flow dies. Bucket under the joint. Unscrew if it has threads. Connect the city side and the house side. Cap or close anything still open. The shortcut stays closed. The pump stays unplugged. Tape a note on the meter and tell the house to leave the taps alone.</p>
+          <p class="stop">Stop if you can't see a way to close it back up. Cap the pipe, keep the meter closed, and think.</p>
+        </li>
+        <li class="hot">
+          <span class="who">Both · leak walk</span>
+          <h3>Open the meter slowly</h3>
+          <p>One faucet open. Walk every new joint with a dry hand. Watch the tank. If something weeps, close the meter, let it die, then fix it.</p>
+        </li>
+        <li class="hot">
+          <span class="who">Ground · power last</span>
+          <h3>Prime, then plug in</h3>
+          <p>Tank valve and inlet valve open. Prime plug open until solid water comes out, then closed. Open the valve on the pump's way out. One house faucet open, then plug in. Let it spit air, then run steady. Close the faucets and listen. It should stop and stay stopped.</p>
+          <p class="stop">Unplug if it runs dry, keeps clicking, or the water heater starts dumping.</p>
+        </li>
+        <li class="hot">
+          <span class="who">Both · the drill</span>
+          <h3>Prove the shortcut, then put it back</h3>
+          <p>Unplug the pump. Close the valve on the pump's way out. Open the shortcut. Confirm a faucet still runs. Then close the shortcut, open the valve on the pump's way out, and plug the pump back in. Label the shortcut, the tank tap, and the valve on the pump's way out. Photograph the valves.</p>
+        </li>
+      </ol>
+
+      <h2 id="build-valves">Valve positions</h2>
+      <h3>A normal evening</h3>
+      <ul>
+        <li>Tank tap <strong class="pos-open">OPEN</strong> (tank can fill)</li>
+        <li>Shortcut <strong class="pos-shut">CLOSED</strong> (pump feeds the house)</li>
+        <li>Pump plugged in</li>
+      </ul>
+      <h3>Out of time</h3>
+      <ol>
+        <li>Unplug the pump first</li>
+        <li>Close the valve on the pump's way out</li>
+        <li>Open the shortcut</li>
+        <li>House gets city water the slow way, same as this morning</li>
+      </ol>
+      <table class="sheet valves">
+        <thead>
+          <tr><th>Part</th><th>Normal evening</th><th>Out of time</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Part">Tank tap. The fill valve, the shutoff on the pipe that climbs to the tank.</td>
+            <td data-label="Normal evening"><strong class="pos-open">OPEN.</strong> The tank can fill.</td>
+            <td data-label="Out of time"><strong class="pos-open">OPEN.</strong> The tank can still fill.</td>
+          </tr>
+          <tr>
+            <td data-label="Part">Shortcut. The bypass valve, the shutoff on the pipe that skips the pump.</td>
+            <td data-label="Normal evening"><strong class="pos-shut">CLOSED.</strong> The pump feeds the house.</td>
+            <td data-label="Out of time"><strong class="pos-open">OPEN</strong> only after the pump is unplugged and the valve on the pump's way out is closed.</td>
+          </tr>
+          <tr>
+            <td data-label="Part">Pump</td>
+            <td data-label="Normal evening">Plugged in.</td>
+            <td data-label="Out of time">Unplugged. Do this first.</td>
+          </tr>
+          <tr>
+            <td data-label="Part">Valve on the pump's way out</td>
+            <td data-label="Normal evening">Open.</td>
+            <td data-label="Out of time">Closed. Do this before you open the shortcut.</td>
+          </tr>
+          <tr>
+            <td data-label="Part">Pump inlet valve</td>
+            <td data-label="Normal evening">Open.</td>
+            <td data-label="Out of time">No change for this backup.</td>
+          </tr>
+          <tr>
+            <td data-label="Part">Bottom valve on the tank</td>
+            <td data-label="Normal evening">Open.</td>
+            <td data-label="Out of time">No change for this backup.</td>
+          </tr>
+          <tr>
+            <td data-label="Part">Meter</td>
+            <td data-label="Normal evening">Open.</td>
+            <td data-label="Out of time">Open.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel" id="safety">
+      <p class="crumb">House tank <span aria-hidden="true">›</span> Safety</p>
+      <div class="title-row">
+        <h1 id="safety-title">Stay safe</h1>
+        <button class="copy-page noprint" type="button" data-label="Copy page">Copy page</button>
+      </div>
+      <p class="lede">The meter stays open until the new parts are together and both of you are at the pipe.</p>
+
+      <h2 id="safe-meter">Stay on your side of the meter</h2>
+      <p>That valve is yours to close. The meter is the water company's. Cut or unscrew downstream of the valve, with a faucet open and a bucket under the joint.</p>
+      <h2 id="safe-call">Call every valve out loud</h2>
+      <p>One person owns the meter during the shutdown and stays there. The other answers "clear" before a valve moves. The bad moment is a person holding an open pipe while the other opens the tank.</p>
+      <h2 id="safe-power">The pump gets water before it gets power</h2>
+      <p>Open the tank side, crack the prime plug, wait until the water is solid, close the plug, then plug in. An empty pump cooks itself. If the pipe from the tank has a high loop, air will sit there and the pump will gulp. The pipe should fall the whole way.</p>
+      <h2 id="safe-gap">Leave the air gap, the float, and the overflow</h2>
+      <p>The gap keeps tank water out of the neighborhood line. The float stops a quiet night from filling the tower forever. The overflow saves you when the float sticks. The tank breathes. A sealed drum is a different machine, and this plan is the wrong one for it.</p>
+      <h2 id="safe-dry">Hands dry. Ground dry. Plug in last</h2>
+      <p>The outlet has to trip when you press Test, and live again when you press Reset. Outside, water should not be able to run down the cord into the plug. The overflow should not be aimed at that outlet.</p>
+      <h2 id="safe-up">Look up before a long pipe goes up</h2>
+      <p>A plastic pipe into an overhead line is a different kind of accident. If the tower takes both hands to climb, the person on the ground sends the tools up a rope.</p>
+      <h2 id="safe-out">Stay out of the tank</h2>
+      <p>Work from the outside. Cement and primer stay in the open air, caps back on, off your skin. If a tower leg looks rotten, or the new pipe would hang off a cracked fitting, stop. The water can wait. A collapse can't.</p>
+      <h2 id="safe-tape">Thread tape is only for threads</h2>
+      <p>Wrap with the turn, three or four layers. Glue joints get primer and cement, and the time on the can. Push fittings get neither. Plastic threads crack if you lean on the wrench. Metal into plastic is hand-tight, then a nudge, with a second wrench holding the pump.</p>
+      <h2 id="safe-drink">This tank is the water you'll use</h2>
+      <p>Drinking-water pipe and fittings. Flush the sludge before it hits the pump. Let a faucet run before anyone drinks the first new water. Lid on. Coarse screen on the overflow.</p>
+      <h2 id="safe-quit">Quit while you still have a way to get water</h2>
+      <p>If the light is going and the pump isn't calm, put the house back on city water. Unplug the pump first. Close the valve on the pump's way out. Open the shortcut. Open the meter. Prove one faucet. Then stop.</p>
+      <p>The shortcut's shutoff is the bypass valve. It is the shutoff on the shortcut pipe that skips the pump and sends city water straight to the house. On a normal day it stays closed, because the pump should be the thing feeding the house. You open it only as a backup, and only in this order: unplug the pump, close the valve on the pump's way out, then open the bypass. If the bypass is open while the pump is still plugged in, the pump can push tank water backward toward the street.</p>
+      <p>A house on city water beats a half-wired pump in the dark.</p>
+    </section>
+
+    <section class="panel" id="trouble">
+      <p class="crumb">House tank <span aria-hidden="true">›</span> Trouble</p>
+      <div class="title-row">
+        <h1 id="trouble-title">When something's wrong</h1>
+        <button class="copy-page noprint" type="button" data-label="Copy page">Copy page</button>
+      </div>
+      <p class="lede">Unplug the pump before you open the shortcut.</p>
+      <p>The <code>shortcut</code> shutoff is the bypass valve. It is the shutoff on the shortcut pipe that skips the pump and sends city water straight to the house. On a normal day it stays closed, because the pump should be the thing feeding the house. You open it only as a backup, and only in this order: unplug the pump, close the valve on the pump's way out, then open the bypass. If the bypass is open while the pump is still plugged in, the pump can push tank water backward toward the street.</p>
+      <p>The <code>tank tap</code> is the fill valve. It is the shutoff on the pipe that climbs to the tank. Open means city water can go up into the tank. Closed means that climb is blocked, so you can work on the float without turning off the whole house. Think of it as the tap for filling the tank.</p>
+      <p>Then use the steps that match what you see.</p>
+
+      <details class="trouble" id="tr-spray">
+        <summary>Water is spraying</summary>
+        <ol>
+          <li>Close the meter valve.</li>
+          <li>Open a faucet so the pressure dies.</li>
+          <li>Then fix the joint. Tightening a spraying fitting with your face over it is how people get cut and soaked.</li>
+          <li>If you can't quiet it, cap the open pipe or close the nearest valve, and leave the meter closed until it's calm.</li>
+        </ol>
+      </details>
+      <details class="trouble" id="tr-start">
+        <summary>The pump won't start</summary>
+        <ol>
+          <li>Press Reset on the outlet.</li>
+          <li>Confirm the controller arrow points toward the house, and that no shutoff is closed between the tank and the pump.</li>
+          <li>Open the prime plug until solid water comes out, close it, try again.</li>
+          <li>If the outlet stays dead, use a different protected outlet. Leave the splices for an electrician.</li>
+        </ol>
+      </details>
+      <details class="trouble" id="tr-stop">
+        <summary>It won't stop, or it keeps clicking</summary>
+        <ol>
+          <li>Unplug it. A pump that runs all night burns. Clicking on and off does the same thing, slower.</li>
+          <li>A toilet or a faucet is usually passing water. Fix that before you plug the pump back in.</li>
+          <li>If every tap is truly closed and it still runs, leave it unplugged and open the shortcut so the house has city water. Close the valve on the pump's way out first.</li>
+        </ol>
+      </details>
+      <details class="trouble" id="tr-dry">
+        <summary>The house has no water</summary>
+        <ol>
+          <li>Check the closures: meter open, valve on the pump's way out open, shortcut closed, tank valve open.</li>
+          <li>A one-way valve backward will block the whole house. The arrow points toward the house, or away from the meter on the city side.</li>
+          <li>Air in the prime plug, or a high loop in the suction pipe, feels like "no water" too.</li>
+          <li>For water this minute: unplug the pump, close the valve on the pump's way out, open the shortcut, open the meter, try a faucet.</li>
+        </ol>
+      </details>
+      <details class="trouble" id="tr-fill">
+        <summary>The tank isn't filling</summary>
+        <ol>
+          <li>Read the gauge again. If the city line can't lift water that high, the fill pump is the fix, and it can wait. The fill pump is not the tank tap.</li>
+          <li>Put the house on the shortcut tonight. Unplug the pump, close the valve on the pump's way out, then open the shortcut.</li>
+          <li>If the pressure is high enough and the level still doesn't rise, a valve is closed, the float is stuck up, or the old pipe is clogged. Push the float down. Open the tank tap (the fill valve on the climb).</li>
+        </ol>
+      </details>
+      <details class="trouble" id="tr-tank">
+        <summary>The tank valve won't close</summary>
+        <ol>
+          <li>Leave the house on the city line. Don't start the cutover.</li>
+          <li>If it's already running, aim it somewhere that won't dig out the tower legs, and let the level drop until you can fit a new valve.</li>
+          <li>Call the other person before anyone puts a hand in that stream.</li>
+        </ol>
+      </details>
+      <details class="trouble" id="tr-late">
+        <summary>It's getting late</summary>
+        <ol>
+          <li>Unplug the pump.</li>
+          <li>Close the valve on the pump's way out.</li>
+          <li>Open the shortcut. That is the bypass valve, the shutoff that sends city water straight to the house.</li>
+          <li>Open the meter.</li>
+          <li>Confirm one faucet runs.</li>
+          <li>Leave a label on the shortcut so nobody plugs the pump in while that shutoff is open. Go inside.</li>
+        </ol>
+      </details>
+    </section>
+
+    <footer>
+      <p>The pump's own paper wins if it disagrees with this page, especially the direction the controller has to stand. Feet of height ÷ 2.31 = psi to reach the inlet, and you want about 5 psi more. If the tower is rotten or the power means opening a wall, that part is a different day.</p>
+      <p><button class="quiet noprint" type="button" id="reset-btn">Clear saved checks on this phone</button></p>
+    </footer>
+  </main>
+</div>
+
+<template id="toc-plan">
+  <a href="#plan-path" data-tab="plan">Where the water goes</a>
+  <a href="#two-taps" data-tab="plan">Two shutoffs you will mix up</a>
+  <a href="#calc-card" data-tab="plan">Can city water reach the tank?</a>
+  <a href="#plan-changes" data-tab="plan">Before you close the meter</a>
+  <a href="#gates" data-tab="plan">Close the meter only when these are true</a>
+</template>
+<template id="toc-buy">
+  <a href="#buy-sizes" data-tab="buy">Sizes first</a>
+  <a href="#buy-shelf" data-tab="buy">On the pump shelf</a>
+  <a href="#buy-names" data-tab="buy">The tank tap and the shortcut</a>
+  <a href="#buy-list" data-tab="buy">The list</a>
+</template>
+<template id="toc-day">
+  <a href="#day-roles" data-tab="day">Who does what</a>
+  <a href="#day-hours" data-tab="day">The hours</a>
+  <a href="#day-decide" data-tab="day">Decide before anyone cuts</a>
+  <a href="#day-store" data-tab="day">Hardware store</a>
+  <a href="#day-setup" data-tab="day">Clear a place to stand</a>
+  <a href="#day-build-block" data-tab="day">Assemble it</a>
+  <a href="#day-eat" data-tab="day">Eat, then walk the arrows</a>
+  <a href="#day-cut" data-tab="day">Tie it in</a>
+  <a href="#day-test" data-tab="day">Leaks first, then power</a>
+  <a href="#day-close" data-tab="day">Label it and stop</a>
+</template>
+<template id="toc-build">
+  <a href="#build-city" data-tab="build">City side</a>
+  <a href="#build-tower" data-tab="build">On the tower</a>
+  <a href="#build-pump" data-tab="build">The pump</a>
+  <a href="#build-house" data-tab="build">The house</a>
+  <a href="#build-arrows" data-tab="build">Four arrows</a>
+  <a href="#build-order" data-tab="build">Order of work</a>
+  <a href="#build-valves" data-tab="build">Valve positions</a>
+</template>
+<template id="toc-safety">
+  <a href="#safe-meter" data-tab="safety">Stay on your side of the meter</a>
+  <a href="#safe-call" data-tab="safety">Call every valve out loud</a>
+  <a href="#safe-power" data-tab="safety">Water before power</a>
+  <a href="#safe-gap" data-tab="safety">Air gap, float, overflow</a>
+  <a href="#safe-dry" data-tab="safety">Hands dry</a>
+  <a href="#safe-up" data-tab="safety">Look up</a>
+  <a href="#safe-out" data-tab="safety">Stay out of the tank</a>
+  <a href="#safe-tape" data-tab="safety">Thread tape</a>
+  <a href="#safe-drink" data-tab="safety">Drinking water</a>
+  <a href="#safe-quit" data-tab="safety">Quit with water still on</a>
+</template>
+<template id="toc-trouble">
+  <a href="#tr-spray" data-tab="trouble">Water is spraying</a>
+  <a href="#tr-start" data-tab="trouble">The pump won't start</a>
+  <a href="#tr-stop" data-tab="trouble">It won't stop</a>
+  <a href="#tr-dry" data-tab="trouble">The house has no water</a>
+  <a href="#tr-fill" data-tab="trouble">The tank isn't filling</a>
+  <a href="#tr-tank" data-tab="trouble">The tank valve won't close</a>
+  <a href="#tr-late" data-tab="trouble">It's getting late</a>
+</template>
+
+<script>
+(function () {
+  var KEY = "house-tank-saturday-v1";
+  var state = load();
+  var units = state.units || { height: "ft", pressure: "psi" };
+  var filter = state.filter || "all";
+  var desktop = window.matchMedia("(min-width: 961px)");
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function save() {
+    var data = { checks: {}, fields: {}, units: units, filter: filter, tab: document.documentElement.dataset.tab || "plan" };
+    document.querySelectorAll("input[data-id]").forEach(function (el) {
+      data.checks[el.dataset.id] = el.checked;
+    });
+    document.querySelectorAll("[data-field]").forEach(function (el) {
+      data.fields[el.dataset.field] = el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  function num(v) {
+    var n = parseFloat(String(v == null ? "" : v).trim().replace(",", "."));
+    return isFinite(n) ? n : null;
+  }
+  function round1(n) { return (Math.round(n * 10) / 10).toString(); }
+
+  function applySaved() {
+    var checks = state.checks || {};
+    var fields = state.fields || {};
+    document.querySelectorAll("input[data-id]").forEach(function (el) {
+      if (Object.prototype.hasOwnProperty.call(checks, el.dataset.id)) el.checked = !!checks[el.dataset.id];
+    });
+    document.querySelectorAll("[data-field]").forEach(function (el) {
+      if (Object.prototype.hasOwnProperty.call(fields, el.dataset.field)) el.value = fields[el.dataset.field];
+    });
+    document.querySelectorAll("[data-unit-group]").forEach(function (btn) {
+      var on = units[btn.dataset.unitGroup] === btn.dataset.unit;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    if (!document.getElementById("start-time").value) document.getElementById("start-time").value = "07:00";
+  }
+
+  function showToc(id) {
+    var tpl = document.getElementById("toc-" + id);
+    var nav = document.getElementById("toc-nav");
+    nav.innerHTML = "";
+    if (tpl) nav.appendChild(tpl.content.cloneNode(true));
+  }
+
+  function setTab(id, scroll) {
+    document.documentElement.dataset.tab = id;
+    document.querySelectorAll(".panel").forEach(function (p) {
+      p.classList.toggle("active", p.id === id);
+    });
+    document.querySelectorAll(".tab").forEach(function (b) {
+      b.setAttribute("aria-selected", b.dataset.tab === id ? "true" : "false");
+    });
+    showToc(id);
+    save();
+    if (scroll) {
+      var panel = document.getElementById(id);
+      if (panel) panel.scrollIntoView({ block: "start" });
+    }
+  }
+
+  function closeNav() {
+    var wasOpen = document.body.classList.contains("nav-open");
+    document.body.classList.remove("nav-open");
+    document.getElementById("nav-toggle").setAttribute("aria-expanded", "false");
+    var nav = document.getElementById("sidenav");
+    if (desktop.matches) nav.removeAttribute("aria-hidden");
+    else nav.setAttribute("aria-hidden", "true");
+    if (wasOpen) {
+      var h = document.querySelector(".panel.active h1");
+      if (h) { h.setAttribute("tabindex", "-1"); h.focus(); }
+    }
+  }
+  function openNav() {
+    document.body.classList.add("nav-open");
+    document.getElementById("nav-toggle").setAttribute("aria-expanded", "true");
+    document.getElementById("sidenav").removeAttribute("aria-hidden");
+    document.getElementById("nav-search").focus();
+  }
+
+  function toPsi(value, unit) {
+    if (unit === "bar") return value * 14.5038;
+    if (unit === "kgcm") return value * 14.2233;
+    return value;
+  }
+  function fromPsi(psi, unit) {
+    if (unit === "bar") return psi / 14.5038;
+    if (unit === "kgcm") return psi / 14.2233;
+    return psi;
+  }
+  function unitLabel(unit) {
+    if (unit === "kgcm") return "kg/cm²";
+    return unit;
+  }
+
+  function calc() {
+    var box = document.getElementById("verdict");
+    var body = document.getElementById("verdict-body");
+    var h = num(document.getElementById("height").value);
+    var p = num(document.getElementById("pressure").value);
+    var hu = units.height;
+    var pu = units.pressure;
+    var banner = document.getElementById("short-banner");
+    var g1 = document.getElementById("g1-why");
+
+    if (h == null || p == null || h <= 0 || p < 0) {
+      box.dataset.state = "empty";
+      box.querySelector("strong").textContent = "Enter both numbers.";
+      body.textContent = "Feet of height ÷ 2.31 = psi to reach the tank. For meters, turn them into feet first (× 3.28). You want about 5 psi, or 0.3 bar, more than that, so a bend and a neighbor's tap don't stall the fill.";
+      banner.className = "banner";
+      banner.textContent = "Fill in the calculator before you buy a second pump.";
+      g1.textContent = "Use the calculator, or a mark on the tank that rose while you waited.";
+      return;
+    }
+
+    var heightFt = hu === "m" ? h * 3.28084 : h;
+    var psi = toPsi(p, pu);
+    var needPsi = heightFt / 2.31;
+    var liftFt = psi * 2.31;
+    var lift = hu === "m" ? liftFt / 3.28084 : liftFt;
+    var spare = fromPsi(psi - needPsi, pu);
+    var heightName = hu === "m" ? "m" : "ft";
+    var pName = unitLabel(pu);
+    var warn = "";
+    if ((pu === "psi" && p > 130) || ((pu === "bar" || pu === "kgcm") && p > 9)) {
+      warn = " That reading is very high for a house. Check the unit on the gauge.";
+    }
+    if ((hu === "m" && h > 30) || (hu === "ft" && h > 100)) {
+      warn += " That height is a serious tower. Check the tape.";
+    }
+
+    var stateName, title, text, action, gText;
+    if (psi >= needPsi + 5) {
+      stateName = "good";
+      title = "It can reach the tank.";
+      text = "The gauge can lift water about " + round1(lift) + " " + heightName + ". The inlet is " + round1(h) + " " + heightName + " up, with about " + round1(spare) + " " + pName + " to spare. A slow fill is fine. The tank stores it. The pump makes the shower strong.";
+      action = "Leave the second pump on the shelf.";
+      gText = "The numbers say city water can reach. A rising mark on the tank is the proof.";
+    } else if (psi >= needPsi) {
+      stateName = "tight";
+      title = "It only just reaches.";
+      text = "You need about " + round1(fromPsi(needPsi, pu)) + " " + pName + " to touch the inlet, and the gauge says " + round1(p) + " " + pName + ". It can wet the tank when the neighborhood is quiet, and stall when someone nearby opens a tap.";
+      action = "Watch the real level before you cut. If it doesn't rise, keep the house on the city line.";
+      gText = "Tight margin. Cut over only if you've seen the level rise.";
+    } else {
+      stateName = "short";
+      title = "It will not climb that high.";
+      text = "The gauge can lift water about " + round1(lift) + " " + heightName + ". The inlet is " + round1(h) + " " + heightName + " up. A bigger pipe will not fix that.";
+      action = "Buy the fill-pump group, or leave the house on the city pipe and do this another day.";
+      gText = "City water is short of the inlet. You want the fill pump and its float switch, or you don't cut.";
+    }
+    box.dataset.state = stateName;
+    box.querySelector("strong").textContent = title;
+    body.textContent = text + " " + action + warn;
+    banner.className = "banner " + (stateName === "good" ? "good" : stateName === "short" ? "bad" : "");
+    banner.textContent = action;
+    g1.textContent = gText;
+  }
+
+  function gates() {
+    var ids = ["g1", "g2", "g3", "g4", "g5", "g6"];
+    var n = ids.filter(function (id) {
+      var el = document.querySelector('input[data-id="' + id + '"]');
+      return el && el.checked;
+    }).length;
+    var pill = document.getElementById("cut-pill");
+    var banner = document.getElementById("gate-banner");
+    var day = document.getElementById("day-gates");
+    var full = n === 6
+      ? "Ready to close the meter. 6 of 6 gates checked."
+      : "Leave the meter open. " + n + " of 6 gates checked.";
+    pill.dataset.ready = n === 6 ? "yes" : "no";
+    pill.textContent = n === 6 ? "Ready 6/6" : "Meter " + n + "/6";
+    pill.setAttribute("aria-label", full);
+    pill.title = full;
+    if (n === 6) {
+      banner.className = "banner good";
+      banner.textContent = "The six gates are checked. The meter person can close it when you're both at the pipe.";
+    } else {
+      banner.className = "banner";
+      banner.textContent = "Leave the meter open. The house still has water.";
+    }
+    day.textContent = n + " of 6 gates checked. The water-off block waits on all six.";
+    document.querySelectorAll(".item").forEach(function (row) {
+      var box = row.querySelector("input");
+      if (box) row.classList.toggle("is-done", box.checked);
+    });
+  }
+
+  function progress() {
+    var must = [].slice.call(document.querySelectorAll('.item[data-band="must"] input'));
+    var done = must.filter(function (el) { return el.checked; }).length;
+    document.getElementById("progress-label").textContent = done + " of " + must.length + " must-buy items checked.";
+    document.getElementById("progress-bar").style.width = (must.length ? (done / must.length) * 100 : 0) + "%";
+  }
+
+  function applyFilter() {
+    document.querySelectorAll(".filter").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", btn.dataset.filter === filter ? "true" : "false");
+    });
+    document.querySelectorAll("#list .item").forEach(function (row) {
+      var band = row.dataset.band;
+      var checked = row.querySelector("input").checked;
+      var show = filter === "all" || filter === band || (filter === "open" && !checked);
+      row.classList.toggle("hidden-item", !show);
+    });
+  }
+
+  function sizeLine() {
+    var ids = ["meterSize", "tankOut", "houseSize", "pumpPorts", "voltage", "fillSize"];
+    var labels = ["meter", "tank outlet", "house", "pump", "volts", "fill"];
+    var parts = [];
+    ids.forEach(function (id, i) {
+      var el = document.querySelector('[data-field="' + id + '"]');
+      if (el && el.value.trim()) parts.push(labels[i] + " " + el.value.trim());
+    });
+    document.getElementById("size-line").textContent = parts.length
+      ? "Buying for: " + parts.join(" · ")
+      : "Write the sizes down before you pay. A valve in the wrong size is a second trip.";
+  }
+
+  function fmtClock(mins) {
+    mins = ((mins % 1440) + 1440) % 1440;
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    var ap = h >= 12 ? "PM" : "AM";
+    var hr = h % 12 || 12;
+    return hr + ":" + String(m).padStart(2, "0") + " " + ap;
+  }
+  function schedule() {
+    var v = document.getElementById("start-time").value || "07:00";
+    var bits = v.split(":");
+    var base = (parseInt(bits[0], 10) || 0) * 60 + (parseInt(bits[1], 10) || 0);
+    document.querySelectorAll(".block").forEach(function (block) {
+      var a = base + parseInt(block.dataset.start, 10);
+      var b = base + parseInt(block.dataset.end, 10);
+      block.querySelector(".when").textContent = fmtClock(a) + " – " + fmtClock(b);
+    });
+    document.getElementById("end-line").textContent = "Done around " + fmtClock(base + 480) + " if the first hour really starts at " + fmtClock(base) + ".";
+    var cut = base + 330;
+    var late = document.getElementById("late-line");
+    if (cut >= 15 * 60 + 30) {
+      late.hidden = false;
+      late.textContent = "The water-off block starts at " + fmtClock(cut) + ". That's late. Unplug the pump, close the valve on the pump's way out, and open the shortcut so the house is on city water. Finish the pump another time.";
+    } else {
+      late.hidden = true;
+    }
+  }
+
+  function flash(btn) {
+    var idle = btn.dataset.label || btn.textContent;
+    btn.textContent = "Copied";
+    setTimeout(function () { btn.textContent = idle; }, 1600);
+  }
+  function writeClipboard(text, btn) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); flash(btn); } catch (e) {}
+      ta.remove();
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { flash(btn); }).catch(fallback);
+    } else fallback();
+  }
+  function copyList() {
+    var lines = [];
+    document.querySelectorAll("#list .item").forEach(function (row) {
+      if (row.classList.contains("hidden-item")) return;
+      var box = row.querySelector("input");
+      if (box.checked) return;
+      lines.push(row.querySelector("strong").textContent);
+    });
+    var text = lines.length ? lines.join("\n") : "Nothing left on this filter.";
+    writeClipboard(text, document.getElementById("copy-btn"));
+  }
+  function copyPage(btn) {
+    var panel = btn.closest(".panel");
+    var prev = btn.style.display;
+    btn.style.display = "none";
+    var text = panel.innerText.replace(/\n{3,}/g, "\n\n").trim();
+    btn.style.display = prev;
+    writeClipboard(text, btn);
+  }
+
+  function refresh() {
+    calc();
+    gates();
+    progress();
+    applyFilter();
+    sizeLine();
+    schedule();
+    save();
+  }
+
+  function goTo(a) {
+    if (!a) return;
+    var tab = a.dataset.tab;
+    var id = (a.getAttribute("href") || "").replace(/^#/, "");
+    if (tab) setTab(tab, false);
+    var target = document.getElementById(id);
+    if (target) {
+      if (target.tagName === "DETAILS") target.open = true;
+      target.scrollIntoView({ block: "start" });
+    }
+    closeNav();
+    if (!desktop.matches) document.getElementById("toc-details").open = false;
+  }
+
+  function runSearch() {
+    var q = document.getElementById("nav-search").value.trim().toLowerCase();
+    var hits = document.getElementById("search-hits");
+    hits.innerHTML = "";
+    document.querySelectorAll(".side").forEach(function (btn) {
+      var hay = ((btn.dataset.search || "") + " " + btn.textContent).toLowerCase();
+      btn.classList.toggle("is-hidden", !!q && hay.indexOf(q) === -1);
+    });
+    ["before", "house"].forEach(function (g) {
+      var any = false;
+      document.querySelectorAll('.side[data-group="' + g + '"]').forEach(function (b) {
+        if (!b.classList.contains("is-hidden")) any = true;
+      });
+      var label = document.querySelector('.nav-label[data-group="' + g + '"]');
+      if (label) label.classList.toggle("is-hidden", !!q && !any);
+    });
+    if (!q) { hits.hidden = true; return; }
+    document.querySelectorAll("template[id^='toc-']").forEach(function (tpl) {
+      tpl.content.querySelectorAll("a").forEach(function (a) {
+        if (a.textContent.toLowerCase().indexOf(q) !== -1) hits.appendChild(a.cloneNode(true));
+      });
+    });
+    if (!hits.children.length) {
+      var p = document.createElement("p");
+      p.className = "note";
+      p.textContent = "Nothing matches.";
+      hits.appendChild(p);
+    }
+    hits.hidden = false;
+  }
+
+  applySaved();
+  var startTab = state.tab || "plan";
+  if (!document.getElementById(startTab)) startTab = "plan";
+  setTab(startTab, false);
+  refresh();
+  var tocPinned = false;
+  if (desktop.matches) {
+    document.getElementById("toc-details").open = true;
+    tocPinned = true;
+  }
+  closeNav();
+
+  document.querySelectorAll("[data-tab]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setTab(btn.dataset.tab, true);
+      if (btn.dataset.jump) {
+        var target = document.getElementById(btn.dataset.jump);
+        if (target) target.scrollIntoView({ block: "start" });
+      }
+      closeNav();
+    });
+  });
+  document.querySelectorAll("[data-unit-group]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      units[btn.dataset.unitGroup] = btn.dataset.unit;
+      document.querySelectorAll('[data-unit-group="' + btn.dataset.unitGroup + '"]').forEach(function (b) {
+        b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      });
+      refresh();
+    });
+  });
+  document.querySelectorAll(".filter").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      filter = btn.dataset.filter;
+      refresh();
+    });
+  });
+  document.body.addEventListener("input", function (e) {
+    if (e.target && e.target.id === "nav-search") { runSearch(); return; }
+    refresh();
+  });
+  document.body.addEventListener("change", refresh);
+  document.getElementById("copy-btn").addEventListener("click", copyList);
+  document.body.addEventListener("click", function (e) {
+    var btn = e.target.closest(".copy-page");
+    if (btn) copyPage(btn);
+  });
+  document.getElementById("toc-nav").addEventListener("click", function (e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    e.preventDefault();
+    goTo(a);
+  });
+  document.getElementById("search-hits").addEventListener("click", function (e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    e.preventDefault();
+    goTo(a);
+  });
+  document.getElementById("nav-toggle").addEventListener("click", function () {
+    if (document.body.classList.contains("nav-open")) closeNav();
+    else openNav();
+  });
+  document.getElementById("nav-close").addEventListener("click", closeNav);
+  document.getElementById("backdrop").addEventListener("click", closeNav);
+  document.getElementById("reset-btn").addEventListener("click", function () {
+    if (confirm("Clear the saved checks and notes on this phone?")) {
+      localStorage.removeItem(KEY);
+      location.reload();
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    var key = e.key.toLowerCase();
+    if ((e.metaKey || e.ctrlKey) && key === "k") {
+      e.preventDefault();
+      if (!desktop.matches) openNav();
+      document.getElementById("nav-search").focus();
+    }
+    if (e.key === "Escape") closeNav();
+  });
+  desktop.addEventListener("change", function () {
+    if (desktop.matches) {
+      closeNav();
+      document.getElementById("toc-details").open = true;
+      tocPinned = true;
+    } else if (tocPinned) {
+      document.getElementById("toc-details").open = false;
+      tocPinned = false;
+      closeNav();
+    }
+  });
+})();
+</script>
+</body>
+</html>
