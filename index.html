@@ -80,6 +80,76 @@
     font-size: 15px;
     max-width: 62ch;
   }
+  .inline-link {
+    display: inline-block;
+    color: var(--link);
+    font: inherit;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 10px 0;
+    min-height: 44px;
+  }
+  .flow h3 { margin: 0 0 8px; font-size: 22px; }
+  .flow-list { list-style: none; margin: 0; padding: 0; }
+  .flow-step { min-width: 0; }
+  .flow-list li.flow-step + li.flow-step {
+    position: relative;
+    margin-top: 26px;
+  }
+  .flow-list li.flow-step + li.flow-step::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    height: 14px;
+    border-left: 1px solid #b5b5b5;
+  }
+  .flow-list li.flow-step + li.flow-step::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: calc(50% - 4px);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid #8a8a8a;
+  }
+  .flow-step.has-aside {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 10px 14px;
+    align-items: start;
+  }
+  .flow-list li.flow-step.has-aside + li.flow-step::before { left: 28%; }
+  .flow-list li.flow-step.has-aside + li.flow-step::after { left: calc(28% - 4px); }
+  .flow-node {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px 12px;
+    background: #fff;
+    break-inside: avoid;
+  }
+  .flow-node.is-maybe { border-style: dashed; }
+  .flow-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 12px;
+    align-items: baseline;
+  }
+  .flow-name { margin: 0; font-weight: 650; }
+  .flow-tag { margin: 0; font-size: 12px; font-weight: 600; color: var(--muted); }
+  .flow-job, .flow-join { margin: 4px 0 0; font-size: 15px; }
+  .flow-job { color: var(--muted); }
+  .flow-kicker {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .flow-aside { min-width: 0; }
+  .flow-aside .flow-node { border-style: dashed; }
+  .flow .note { margin: 0 0 8px; }
   table.buy { table-layout: fixed; }
   table.buy col.col-check { width: 78px; }
   table.buy col.col-name { width: 276px; }
@@ -478,7 +548,7 @@
     <button class="tab side" type="button" data-tab="buy" data-group="before" data-search="buy list parts store sizes pump" aria-selected="false">Buy</button>
     <button class="tab side" type="button" data-tab="day" data-group="before" data-search="day schedule hours roles time" aria-selected="false">Day</button>
     <p class="nav-label" data-group="house">At the house</p>
-    <button class="tab side" type="button" data-tab="build" data-group="house" data-search="build pipes valves shortcut tank tap arrows order" aria-selected="false">Build</button>
+    <button class="tab side" type="button" data-tab="build" data-group="house" data-search="build pipes valves shortcut tank tap arrows order flow flowchart schematic parts tee strainer float backup" aria-selected="false">Build</button>
     <button class="tab side" type="button" data-tab="safety" data-group="house" data-search="safety rules meter ladder power" aria-selected="false">Safety</button>
     <button class="tab side" type="button" data-tab="trouble" data-group="house" data-search="trouble leak spray late no water pump" aria-selected="false">Trouble</button>
   </aside>
@@ -526,12 +596,13 @@
         <img src="images/shortcut-open.jpg" alt="City water takes the upper pipe around an unplugged pump and into the house. A red tap on the pump pipe is closed.">
         <figcaption>A bad day. The pump is unplugged. City water takes the upper pipe and still reaches the house. It will be slow. Slow is better than nothing.</figcaption>
       </figure>
-      <p>When you need that slow water, do these three things in order. The order matters, because opening the backup tap while the pump is still plugged in can shove tank water back toward the street.</p>
+      <p>When you need that slow water, do these three things in order. The order matters. Water leaves the tank through the bottom. The pump pushes it. An open backup tap gives that push a road back to the meter. The inlet on top ends in open air, so the tank cannot send water back out of it.</p>
       <ol>
         <li>Unplug the pump.</li>
         <li>Close the tap on the pipe that leaves the pump.</li>
         <li>Open the backup tap.</li>
       </ol>
+      <p><button class="inline-link" type="button" data-tab="build" data-jump="build-flow">Every part on that path, in order, is drawn on Build.</button></p>
 
       <h2 id="skip-shortcut">You can skip the backup pipe</h2>
       <p>Skip it if you are fine with every faucet going dead whenever the pump is off or the power cuts out.</p>
@@ -657,7 +728,7 @@
         </thead>
         <tbody>
           <tr class="item" data-band="must"><td class="check"><input id="ck-pump" type="checkbox" data-id="pump"></td><td class="name"><label for="ck-pump"><strong>Automatic booster pump</strong></label><img class="buy-shot" src="images/buy/pump.jpg" alt="A small stainless booster pump with a gray control box, two threaded ports, and a power cord."></td><td class="why">Sits below the tank. Stops when no tap is open, and stops if it runs dry. Voltage matches the outlet. Modest house size, because old half-inch lines don't want a fire pump.</td><td class="tag">Must</td></tr>
-          <tr class="item" data-band="must"><td class="check"><input id="ck-city-check" type="checkbox" data-id="city-check"></td><td class="name"><label for="ck-city-check"><strong>One-way valve for the city side</strong></label><img class="buy-shot" src="images/buy/city-check.jpg" alt="A brass swing check valve with a cap on top and an arrow pointing along the body."></td><td class="why">A door that only opens away from the meter, so tank water cannot be pushed back to the street. Ask for a swing check. The hinge sits on top.</td><td class="tag">Must</td></tr>
+          <tr class="item" data-band="must"><td class="check"><input id="ck-city-check" type="checkbox" data-id="city-check"></td><td class="name"><label for="ck-city-check"><strong>One-way valve for the city side</strong></label><img class="buy-shot" src="images/buy/city-check.jpg" alt="A brass swing check valve with a cap on top and an arrow pointing along the body."></td><td class="why">A door that only opens away from the meter. The top inlet ends in open air, so the tank cannot push water back out of it. This door stops the other road: the pump, with the backup tap open, shoving tank water toward the street. Ask for a swing check. The hinge sits on top.</td><td class="tag">Must</td></tr>
           <tr class="item" data-band="must"><td class="check"><input id="ck-strainer" type="checkbox" data-id="strainer"></td><td class="name"><label for="ck-strainer"><strong>Strainer</strong></label><img class="buy-shot" src="images/buy/strainer.jpg" alt="A brass Y-strainer with a hex cap hanging down and an arrow along the straight body."></td><td class="why">Pump inlet size. Cap hangs down so grit falls into the part you can open over a bucket. Arrow toward the pump.</td><td class="tag">Must</td></tr>
           <tr class="item" data-band="must"><td class="check"><input id="ck-valves" type="checkbox" data-id="valves"></td><td class="name"><label for="ck-valves"><strong>Four ball valves</strong></label><img class="buy-shot" src="images/buy/valves.jpg" alt="Four brass ball valves, each with a red lever handle."></td><td class="why">Four ordinary taps you turn a quarter turn. One fills the tank. One sits before the pump. One sits after the pump. One is the backup tap that skips the pump.</td><td class="tag">Must</td></tr>
           <tr class="item" data-band="must"><td class="check"><input id="ck-tees" type="checkbox" data-id="tees"></td><td class="name"><label for="ck-tees"><strong>Two tees</strong></label><img class="buy-shot" src="images/buy/tees.jpg" alt="Two white plastic tee fittings."></td><td class="why">One after the meter, where the climb and the shortcut split. One before the house, where the shortcut joins the pump.</td><td class="tag">Must</td></tr>
@@ -683,7 +754,7 @@
           <tr class="item" data-band="tool"><td class="check"><input id="ck-garden" type="checkbox" data-id="garden"></td><td class="name"><label for="ck-garden"><strong>Cutter, gloves, tongs, shovel, bags</strong></label><img class="buy-shot" src="images/buy/garden.jpg" alt="Pruning shears, gloves, tongs, a short shovel, and trash bags."></td><td class="why">First job of the day. A gardening cutter and tongs for the scattered plants in the front yard. Gloves so you are not grabbing thorns with bare hands. A shovel to move the soil and cover the new pipes a little, not to dig a deep trench. Trash bags for what you pull out. Check these off if they are already in the shed.</td><td class="tag">Tool</td></tr>
           <tr class="item" data-band="short"><td class="check"><input id="ck-fillpump" type="checkbox" data-id="fillpump"></td><td class="name"><label for="ck-fillpump"><strong>A smaller pump to push city water up</strong></label><img class="buy-shot" src="images/buy/fillpump.jpg" alt="A small blue utility pump with two ports and a power cord."></td><td class="why">Only if the calculator says the city line can't reach. This one fills the tank. It does not feed the house, and it is not the tank tap. If you discover this at noon, it is fine to stop and do it next week.</td><td class="tag">If water is short</td></tr>
           <tr class="item" data-band="short"><td class="check"><input id="ck-fillfloat" type="checkbox" data-id="fillfloat"></td><td class="name"><label for="ck-fillfloat"><strong>Piggyback float switch for that pump</strong></label><img class="buy-shot" src="images/buy/fillfloat.jpg" alt="A float raised on its cord, ending in a plug with a socket on its face."></td><td class="why">Stops the fill pump when the tank is full. A fill pump without this runs until it burns or the tower is washing itself.</td><td class="tag">If water is short</td></tr>
-          <tr class="item" data-band="short"><td class="check"><input id="ck-fillcheck" type="checkbox" data-id="fillcheck"></td><td class="name"><label for="ck-fillcheck"><strong>One-way valve on the fill pump outlet</strong></label><img class="buy-shot" src="images/buy/fillcheck.jpg" alt="A small brass inline check valve with an arrow and no cap on top."></td><td class="why">Arrow toward the tank, so the tank doesn't drain back through the fill pump.</td><td class="tag">If water is short</td></tr>
+          <tr class="item" data-band="short"><td class="check"><input id="ck-fillcheck" type="checkbox" data-id="fillcheck"></td><td class="name"><label for="ck-fillcheck"><strong>One-way valve on the fill pump outlet</strong></label><img class="buy-shot" src="images/buy/fillcheck.jpg" alt="A small brass inline check valve with an arrow and no cap on top."></td><td class="why">Arrow toward the tank, so the water standing in the climb stays there when the pump stops. The tank stays put on its own, because that pipe ends above the water.</td><td class="tag">If water is short</td></tr>
           <tr class="item" data-band="short"><td class="check"><input id="ck-fillflex" type="checkbox" data-id="fillflex"></td><td class="name"><label for="ck-fillflex"><strong>Two flex lines for the fill pump</strong></label><img class="buy-shot" src="images/buy/fillflex.jpg" alt="Two braided steel water hoses with a nut on each end."></td><td class="why">Same idea as the house pump. Soft bend, matching threads, bought at the same time.</td><td class="tag">If water is short</td></tr>
         </tbody>
       </table>
@@ -779,12 +850,48 @@
       </div>
       <p class="lede">You are building two paths. One fills the tank. One goes from the tank, through the pump, into the house. A third pipe skips the pump, and its tap stays closed until the pump is unplugged.</p>
 
+      <h2 id="build-flow">Follow the water</h2>
+      <p>City water climbs into the tank. The pump pushes it to the house. The backup pipe leaves at the tee and comes back at the joining tee. That tap stays closed while the pump is plugged in.</p>
+      <p>The four ball valves are the tank tap, the inlet valve, the valve on the way out, and the backup tap. The two tees are the split and the join. The two flex lines are the soft bends on either side of the pump.</p>
+      <p class="note">A green Open is how that tap sits on a normal day. A red Closed is how the backup tap sits. Already there means the house or your sketch already has it. A dashed box is a branch, or a part you add only if the pump box has no one-way valve of its own.</p>
+      <div class="flow" id="flow-root"></div>
+      <script type="text/plain" id="flow-src">
+flowchart TD
+%% section From the meter
+meter["Meter valve<br/>Close this for the tie-in. Leave the meter itself alone."]:::have --> check["One-way valve<br/>Arrow points away from the meter. On a swing check, the hinge sits on top."]:::add
+check --> split["Tee<br/>One pipe climbs to the tank. The other skips the pump."]:::add
+split -.->|Skips the pump| bypass["Backup tap<br/>Closed on a normal day. Unplug the pump, close the valve on the way out, then open this tap."]:::shut
+%% section Up to the tank
+split --> tap["Tank tap<br/>Open, the tank fills. Closed, it does not. The store calls this a fill valve."]:::ball
+%% note If the calculator says the city line cannot reach, a smaller pump sits on this climb, with a float switch, a one-way valve whose arrow points toward the tank, and two flex lines. That pump fills the tank.
+tap --> riser["Riser<br/>Strap it to the tower. Two easy bends beat one sharp elbow."]:::have
+riser --> float["Float valve<br/>It shuts the fill while the water is still below the overflow."]:::add
+float --> gap["Air gap<br/>The pipe stops above the water, about two finger-widths."]:::gap
+gap --> tank["Tank<br/>Lid on, loose enough to breathe."]:::have
+tank -.->|Only if the float sticks| over["Overflow<br/>As big as the fill, with a coarse screen. Aim it where you can see it, away from the legs and the plug."]:::add
+%% section Out of the tank, through the pump
+%% note On a normal day the backup tap is closed. The house gets this water.
+tank --> bottom["Bottom valve<br/>Open. You proved it shuts, with a bucket, from the side."]:::have
+bottom --> downpipe["Pipe down from the tank<br/>As fat as the pump inlet the whole way. It falls steadily, with no high loop."]:::add
+downpipe --> inlet["Inlet valve<br/>Open. Close it to clean the strainer without climbing."]:::ball
+inlet --> strainer["Strainer<br/>Arrow toward the pump. Cap hangs down."]:::add
+strainer --> flexIn["Flex line<br/>A soft bend into the pump."]:::add
+flexIn --> pump["Pump<br/>On the paver, below the tank. Off, water stops here. Plug it in after it is full of water, on an outlet that trips. If the box is quiet about running dry, the pump plugs into a float switch that hangs in the tank."]:::have
+pump --> ctrl["Controller<br/>Stand it the way the box draws. Arrow toward the house."]:::have
+ctrl --> extra["One-way valve at the pump<br/>Arrow toward the house."]:::maybe
+extra --> outv["Valve on the way out<br/>Open while the pump is plugged in. Close it before you open the backup tap."]:::ball
+outv --> flexOut["Flex line<br/>A soft bend leaving the pump."]:::add
+flexOut --> join["Joining tee<br/>One reduction is allowed here if the house pipe is smaller."]:::add
+join --> house["House<br/>The tie-in is a coupling you can undo."]:::have
+bypass -.->|The backup pipe comes back in here| join
+      </script>
+
       <h2 id="build-city">City side</h2>
       <table class="sheet">
         <thead><tr><th>Part</th><th>What it does</th><th>Sketch</th></tr></thead>
         <tbody>
           <tr><td>Meter valve</td><td>Close this for the tie-in. Leave the meter itself alone. Open it slowly the first time, with a faucet open so air has somewhere to go.</td><td>Already there</td></tr>
-          <tr><td>One-way valve</td><td>Arrow points away from the meter. On a swing check, the hinge sits on top so the little door can close. This sits before the split.</td><td>Add this</td></tr>
+          <tr><td>One-way valve</td><td>Arrow points away from the meter. On a swing check, the hinge sits on top so the little door can close. This sits before the split. It stops the pump from shoving water back through the backup pipe. The top inlet cannot do that, because it ends in open air.</td><td>Add this</td></tr>
           <tr><td>The split</td><td>One city pipe becomes two. One climbs to the tank. The other is the backup pipe around the pump.</td><td>Add this</td></tr>
           <tr><td>Backup tap</td><td>The tap on the pipe that skips the pump. Closed on a normal day. Open only after the pump is unplugged.</td><td>Add this</td></tr>
           <tr><td>Tank tap</td><td>The tap on the pipe that climbs to the tank. Open, the tank fills. Closed, it does not.</td><td>Add this</td></tr>
@@ -960,7 +1067,7 @@
       <h2 id="safe-power">The pump gets water before it gets power</h2>
       <p>Open the tank side, crack the prime plug, wait until the water is solid, close the plug, then plug in. An empty pump cooks itself. If the pipe from the tank has a high loop, air will sit there and the pump will gulp. The pipe should fall the whole way.</p>
       <h2 id="safe-gap">Leave the air gap, the float, and the overflow</h2>
-      <p>The gap keeps tank water out of the neighborhood line. The float stops a quiet night from filling the tower forever. The overflow saves you when the float sticks. The tank breathes. A sealed drum is a different machine, and this plan is the wrong one for it.</p>
+      <p>The gap keeps tank water out of the neighborhood line. The fill pipe ends in open air, so the tank has no way to push water back down it. The one-way valve by the meter is for the backup pipe, in case that tap is open while the pump is running. The float stops a quiet night from filling the tower forever. The overflow saves you when the float sticks. The tank breathes. A sealed drum is a different machine, and this plan is the wrong one for it.</p>
       <h2 id="safe-dry">Hands dry. Ground dry. Plug in last</h2>
       <p>The outlet has to trip when you press Test, and live again when you press Reset. Outside, water should not be able to run down the cord into the plug. The overflow should not be aimed at that outlet.</p>
       <h2 id="safe-up">Look up before a long pipe goes up</h2>
@@ -1082,6 +1189,7 @@
   <a href="#day-close" data-tab="day">Label it and stop</a>
 </template>
 <template id="toc-build">
+  <a href="#build-flow" data-tab="build">Follow the water</a>
   <a href="#build-city" data-tab="build">City side</a>
   <a href="#build-tower" data-tab="build">On the tower</a>
   <a href="#build-pump" data-tab="build">The pump</a>
@@ -1401,6 +1509,180 @@
     writeClipboard(text, btn);
   }
 
+  function renderFlow() {
+    var srcEl = document.getElementById("flow-src");
+    var root = document.getElementById("flow-root");
+    if (!srcEl || !root) return;
+    var tags = {
+      have: "Already there",
+      add: "Add this",
+      ball: "Add this",
+      shut: "Add this",
+      maybe: "If the box has none",
+      gap: "Leave this"
+    };
+    var nodes = {};
+    var edges = [];
+    var pendingSection = null;
+    var pendingNote = null;
+
+    function define(id, name, job, cls) {
+      var n = nodes[id];
+      var isNew = !n || !n.defined;
+      if (!n) {
+        n = { id: id, rejoins: [], asides: [] };
+        nodes[id] = n;
+      }
+      n.name = name;
+      n.job = job;
+      n.cls = cls || "add";
+      if (isNew) {
+        if (pendingSection) { n.section = pendingSection; pendingSection = null; }
+        if (pendingNote) { n.note = pendingNote; pendingNote = null; }
+      }
+      n.defined = true;
+    }
+
+    srcEl.textContent.split("\n").forEach(function (line) {
+      var section = line.match(/^\s*%%\s*section\s+(.+?)\s*$/);
+      if (section) { pendingSection = section[1]; return; }
+      var note = line.match(/^\s*%%\s*note\s+(.+?)\s*$/);
+      if (note) { pendingNote = note[1]; return; }
+      if (/^\s*%%/.test(line) || /^\s*flowchart\b/.test(line) || !line.trim()) return;
+      var nodeRe = /([A-Za-z_][\w]*)\s*\[\s*"([^"]*)"\s*\](?::::(\w+))?/g;
+      var stripped = line.replace(nodeRe, function (_, id, text, cls) {
+        var parts = text.split(/<br\s*\/?>/i);
+        var name = (parts.shift() || id).trim();
+        define(id, name, parts.join(" ").trim(), cls || "add");
+        return " " + id + " ";
+      });
+      var edgeRe = /([A-Za-z_][\w]*)\s*(-->|-\.->)\s*(?:\|([^|]*)\|\s*)?([A-Za-z_][\w]*)/g;
+      var em;
+      while ((em = edgeRe.exec(stripped))) {
+        edges.push({
+          from: em[1],
+          to: em[4],
+          kind: em[2] === "-->" ? "solid" : "dotted",
+          label: (em[3] || "").trim()
+        });
+      }
+    });
+
+    var solidOut = {};
+    var solidIn = {};
+    var dotted = [];
+    edges.forEach(function (e) {
+      if (e.kind === "solid") {
+        solidOut[e.from] = e.to;
+        solidIn[e.to] = e.from;
+      } else dotted.push(e);
+    });
+    var chain = [];
+    var onChain = {};
+    var start = null;
+    Object.keys(nodes).forEach(function (id) {
+      if (nodes[id].defined && !solidIn[id] && solidOut[id]) start = id;
+    });
+    var guard = 0;
+    while (start && !onChain[start] && guard < 40) {
+      chain.push(start);
+      onChain[start] = true;
+      start = solidOut[start];
+      guard++;
+    }
+    dotted.forEach(function (e) {
+      if (!nodes[e.from] || !nodes[e.to]) return;
+      if (onChain[e.to] && !onChain[e.from] && e.label) nodes[e.to].rejoins.push(e.label);
+      else if (onChain[e.from] && !onChain[e.to]) nodes[e.from].asides.push({ node: nodes[e.to], label: e.label });
+    });
+
+    function fillJob(p, job) {
+      var re = /\b(Open|Closed)\b/g;
+      var last = 0;
+      var m;
+      var any = false;
+      while ((m = re.exec(job))) {
+        any = true;
+        if (m.index > last) p.appendChild(document.createTextNode(job.slice(last, m.index)));
+        var strong = document.createElement("strong");
+        strong.className = m[1] === "Open" ? "pos-open" : "pos-shut";
+        strong.textContent = m[1];
+        p.appendChild(strong);
+        last = m.index + m[1].length;
+      }
+      if (!any) p.textContent = job;
+      else if (last < job.length) p.appendChild(document.createTextNode(job.slice(last)));
+    }
+    function nodeEl(n) {
+      var box = document.createElement("div");
+      box.className = "flow-node" + (n.cls === "maybe" ? " is-maybe" : "");
+      var top = document.createElement("div");
+      top.className = "flow-top";
+      var name = document.createElement("p");
+      name.className = "flow-name";
+      name.textContent = n.name;
+      var tag = document.createElement("p");
+      tag.className = "flow-tag";
+      tag.textContent = tags[n.cls] || "Add this";
+      top.appendChild(name);
+      top.appendChild(tag);
+      box.appendChild(top);
+      (n.rejoins || []).forEach(function (label) {
+        var join = document.createElement("p");
+        join.className = "flow-join";
+        join.textContent = label;
+        box.appendChild(join);
+      });
+      if (n.job) {
+        var job = document.createElement("p");
+        job.className = "flow-job";
+        fillJob(job, n.job);
+        box.appendChild(job);
+      }
+      return box;
+    }
+
+    var list = document.createElement("ol");
+    list.className = "flow-list";
+    list.setAttribute("aria-label", "Parts in the order the water passes them");
+    chain.forEach(function (id) {
+      var n = nodes[id];
+      var li = document.createElement("li");
+      li.className = "flow-step";
+      var main = document.createElement("div");
+      main.className = "flow-main";
+      if (n.section) {
+        var h = document.createElement("h3");
+        h.id = "flow-" + n.section.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        h.textContent = n.section;
+        main.appendChild(h);
+      }
+      if (n.note) {
+        var note = document.createElement("p");
+        note.className = "note";
+        note.textContent = n.note;
+        main.appendChild(note);
+      }
+      main.appendChild(nodeEl(n));
+      li.appendChild(main);
+      if (n.asides && n.asides.length) li.classList.add("has-aside");
+      (n.asides || []).forEach(function (a) {
+        var aside = document.createElement("div");
+        aside.className = "flow-aside";
+        if (a.label) {
+          var k = document.createElement("p");
+          k.className = "flow-kicker";
+          k.textContent = a.label;
+          aside.appendChild(k);
+        }
+        if (a.node) aside.appendChild(nodeEl(a.node));
+        li.appendChild(aside);
+      });
+      list.appendChild(li);
+    });
+    root.appendChild(list);
+  }
+
   function refresh() {
     calc();
     gates();
@@ -1456,6 +1738,7 @@
     hits.hidden = false;
   }
 
+  renderFlow();
   applySaved();
   var startTab = state.tab || "plan";
   if (!document.getElementById(startTab)) startTab = "plan";
