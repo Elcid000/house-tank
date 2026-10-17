@@ -371,9 +371,14 @@
   .checks .item { border-top: 1px solid var(--line); }
   .checks label { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; min-height: 44px; }
   .checks .why { display: block; color: var(--muted); font-weight: 400; margin-top: 4px; }
-  .roles { display: grid; gap: 16px; margin-top: 8px; }
+  .roles { display: grid; gap: 12px; margin-top: 4px; }
   .block { padding: 4px 0 8px; border-top: 1px solid var(--line); margin-top: 18px; }
-  .when { margin: 0 0 4px; color: var(--muted); font-size: 13px; font-weight: 600; }
+  .block h3 { margin: 2px 0 8px; }
+  .when { margin: 0; color: var(--ink); font-size: 15px; font-weight: 700; }
+  .role ul, .stop ul, .day-notes { margin: 0; padding-left: 1.15em; }
+  .role li, .stop li { margin: 4px 0; }
+  .day-notes { margin: 8px 0 4px; max-width: 62ch; }
+  .day-notes li { margin: 6px 0; }
   .checkline { display: flex; gap: 10px; align-items: center; min-height: 44px; margin-top: 8px; font-weight: 600; }
   .stop { margin: 10px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--bad); max-width: 68ch; }
   .who { display: block; margin-bottom: 2px; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -510,7 +515,7 @@
     <p class="nav-label" data-group="before">Before the cut</p>
     <button class="tab side" type="button" data-tab="plan" data-group="before" data-search="plan reach calculator gates meter height pressure tank tap shortcut" aria-selected="true">Plan</button>
     <button class="tab side" type="button" data-tab="buy" data-group="before" data-search="buy list parts store sizes pump float dry-run" aria-selected="false">Buy</button>
-    <button class="tab side" type="button" data-tab="day" data-group="before" data-search="day schedule hours roles time" aria-selected="false">Day</button>
+    <button class="tab side" type="button" data-tab="day" data-group="before" data-search="day schedule hours roles time yard store clock" aria-selected="false">Day</button>
     <p class="nav-label" data-group="house">At the house</p>
     <button class="tab side" type="button" data-tab="build" data-group="house" data-search="build pipes valves shortcut tank tap arrows order flow flowchart schematic parts tee strainer float backup" aria-selected="false">Build</button>
     <button class="tab side" type="button" data-tab="safety" data-group="house" data-search="safety rules meter ladder power" aria-selected="false">Safety</button>
@@ -733,75 +738,215 @@
       <p class="lede">One person owns the meter. One person owns the tower.</p>
 
       <h2 id="day-roles">Who does what</h2>
-      <p>Swap those jobs only in the morning, if one of you is happier on the ladder. After that, the meter person stays at the valve during the shutdown. Tell anyone else in the house to leave the taps alone until you say so. Tape a note on the meter: working, leave it.</p>
-      <p>If the day goes bad, the backup tap is how the house gets water. Unplug the pump, close the tap on the pipe leaving the pump, then open the backup tap. The pictures are on Plan.</p>
+      <ul class="day-notes">
+        <li>Swap jobs only at the start, if one of you is happier on the ladder.</li>
+        <li>After that, the meter person stays at the valve during the shutdown.</li>
+        <li>Tell the house to leave the taps alone. Tape the meter: working, leave it.</li>
+        <li>If the day goes bad: unplug the pump, close the tap on the pipe leaving the pump, then open the backup tap. The pictures are on Plan.</li>
+      </ul>
       <label class="field" style="max-width:280px">What time do you actually start?
-        <input id="start-time" data-field="start" type="time" value="07:00">
+        <input id="start-time" data-field="start" type="time" value="11:30">
       </label>
-      <p id="end-line" style="margin-top:10px"></p>
+      <p id="end-line" style="margin-top:10px">Done around 5:30 PM if you start at 11:30 AM.</p>
       <p class="banner" id="late-line" hidden></p>
       <p class="note" id="day-gates" style="margin-top:10px"></p>
 
       <h2 id="day-hours">The hours</h2>
-      <article class="block" id="day-decide" data-start="0" data-end="60">
-        <p class="when">First hour</p>
-        <h3>Decide before anyone cuts</h3>
+      <article class="block" id="day-setup" data-start="0" data-end="60">
+        <p class="when">11:30 AM – 12:30 PM</p>
+        <h3>Clear the front yard</h3>
         <div class="roles">
-          <div class="role"><h4>On the ground</h4><p>Gauge on a hose bibb, other taps closed, number into the calculator. Photos of the meter outlet, the house pipe, and the outlet. Press Test, then Reset.</p></div>
-          <div class="role"><h4>On the tower</h4><p>Measure up to the inlet. Photos of the inlet, the bottom valve, and the lid. Crack the valve into a bucket from the side, then close it and watch it stop.</p></div>
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Plants are in the way of the meter and the new pipes. Gloves on.</li>
+              <li>Cutter for the stems. Tongs for pieces you don't want to grab.</li>
+              <li>Bags for the pile. Keep that pile off the meter.</li>
+              <li>Shovel a shallow cover, not a trench. Don't leave pipes lying on the yard.</li>
+              <li>Leave the meter valve and the pump easy to reach. Don't bury a joint you haven't tested.</li>
+              <li>Set the pump pad lower than the tank outlet, under cover.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Bag what gets cut. Keep that pile off the meter.</li>
+              <li>Look up before anyone walks with a long pipe.</li>
+            </ul>
+          </div>
         </div>
-        <p class="stop">Stop the whole cutover if the valve won't seal or the water can't climb and you don't have a fill pump. The house stays as it is.</p>
-        <label class="checkline"><input type="checkbox" data-id="day-decide"> Done</label>
-      </article>
-      <article class="block" id="day-store" data-start="60" data-end="150">
-        <p class="when">Store</p>
-        <h3>Hardware store, both of you</h3>
-        <p>One person holds the list and the photos. The other holds parts against the pump. Threads start by hand. Voltage matches. If the calculator says the water reaches, the fill pump stays on the shelf.</p>
-        <label class="checkline"><input type="checkbox" data-id="day-store"> Done</label>
-      </article>
-      <article class="block" id="day-setup" data-start="150" data-end="225">
-        <p class="when">Yard first</p>
-        <h3>Clear the front yard before you touch a pipe</h3>
-        <p>The plants are in the way of the meter and of the path the new pipes will take. Gloves on. Cutter for the stems. Tongs for the scattered pieces you do not want to grab. Bags for the pile. Keep that pile off the meter.</p>
-        <p>Then the shovel. You are not trenching a ditch. You are moving enough soil to set the pipes in a shallow cover so they are not lying on top of the yard. Leave the meter valve and the pump easy to reach. Do not bury a joint you have not tested yet.</p>
-        <p>When the ground is clear, set the pump pad lower than the tank outlet, under cover. Look up before anyone walks with a long pipe.</p>
         <label class="checkline"><input type="checkbox" data-id="day-setup"> Done</label>
       </article>
-      <article class="block" id="day-build-block" data-start="225" data-end="300">
-        <p class="when">Build</p>
-        <h3>Assemble it while the house still has water</h3>
+      <article class="block" id="day-store" data-start="60" data-end="120">
+        <p class="when">12:30 PM – 1:30 PM</p>
+        <h3>Hardware store</h3>
         <div class="roles">
-          <div class="role"><h4>On the ground</h4><p>Strainer, valves, flex lines, controller, shortcut, city one-way valve. Check the arrows. Support the pipes. Flush the tank bottom into a bucket before it reaches the pump.</p></div>
-          <div class="role"><h4>On the tower</h4><p>Float, overflow, coarse screen, lid. Strap the riser. The fill pipe ends above the overflow with air in between.</p></div>
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Hold the list and the photos.</li>
+              <li>If the calculator says the water reaches, the fill pump stays on the shelf.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Hold parts against the pump. Threads start by hand.</li>
+              <li>Voltage matches the outlet.</li>
+            </ul>
+          </div>
+        </div>
+        <label class="checkline"><input type="checkbox" data-id="day-store"> Done</label>
+      </article>
+      <article class="block" id="day-decide" data-start="120" data-end="150">
+        <p class="when">1:30 PM – 2:00 PM</p>
+        <h3>Go or no-go</h3>
+        <div class="roles">
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Gauge on a hose bibb, other taps closed. Put the number in the calculator.</li>
+              <li>Photos of the meter outlet, the house pipe, and the outlet.</li>
+              <li>Press Test, then Reset.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Measure up to the inlet.</li>
+              <li>Photos of the inlet, the bottom valve, and the lid.</li>
+              <li>Crack the valve into a bucket from the side. Close it and watch it stop.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="stop">
+          <ul>
+            <li>Stop the whole cutover if the valve won't seal.</li>
+            <li>Stop if the water can't climb and you don't have a fill pump.</li>
+            <li>The house stays as it is.</li>
+          </ul>
+        </div>
+        <label class="checkline"><input type="checkbox" data-id="day-decide"> Done</label>
+      </article>
+      <article class="block" id="day-build-block" data-start="150" data-end="195">
+        <p class="when">2:00 PM – 2:45 PM</p>
+        <h3>Assemble it</h3>
+        <div class="roles">
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Strainer, valves, flex lines, controller, shortcut, city one-way valve.</li>
+              <li>Check the arrows. Support the pipes.</li>
+              <li>Flush the tank bottom into a bucket before it reaches the pump.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Float, overflow, coarse screen, lid.</li>
+              <li>Strap the riser.</li>
+              <li>The fill pipe ends above the overflow, with air in between.</li>
+            </ul>
+          </div>
         </div>
         <label class="checkline"><input type="checkbox" data-id="day-build"> Done</label>
       </article>
-      <article class="block" id="day-eat" data-start="300" data-end="330">
-        <p class="when">Before the cut</p>
+      <article class="block" id="day-eat" data-start="195" data-end="225">
+        <p class="when">2:45 PM – 3:15 PM</p>
         <h3>Eat, then walk the arrows</h3>
-        <p>Hungry people rush a cut. Point at each arrow together. Say the words you'll use: closed, open, clear. The meter person does not leave the valve once it closes.</p>
+        <div class="roles">
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Eat first. Hungry people rush a cut.</li>
+              <li>Once the meter closes, you stay at the valve.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Point at each arrow together.</li>
+              <li>Say the words you'll use: closed, open, clear.</li>
+            </ul>
+          </div>
+        </div>
         <label class="checkline"><input type="checkbox" data-id="day-eat"> Done</label>
       </article>
-      <article class="block" id="day-cut" data-start="330" data-end="420">
-        <p class="when">Water off</p>
-        <h3>Tie it in</h3>
-        <p>Follow the shutdown steps on Build. During the tie-in the shortcut stays closed and the pump stays unplugged. If this block starts late, your job is to restore water, not to finish the pump: unplug the pump, close the valve on the pump's way out, open the shortcut, open the meter, and prove one faucet.</p>
+      <article class="block" id="day-cut" data-start="225" data-end="285">
+        <p class="when">3:15 PM – 4:15 PM</p>
+        <h3>Water off</h3>
+        <div class="roles">
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Follow the shutdown steps on Build.</li>
+              <li>Shortcut stays closed. Pump stays unplugged.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Answer "clear" before a valve moves.</li>
+              <li>Don't open the tank while someone is holding an open pipe.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="stop">
+          <ul>
+            <li>If this block starts late, restore water. Don't finish the pump.</li>
+            <li>Unplug the pump.</li>
+            <li>Close the valve on the pump's way out.</li>
+            <li>Open the shortcut.</li>
+            <li>Open the meter.</li>
+            <li>Prove one faucet.</li>
+          </ul>
+        </div>
         <label class="checkline"><input type="checkbox" data-id="day-cut"> Done</label>
       </article>
-      <article class="block" id="day-test" data-start="420" data-end="465">
-        <p class="when">Test</p>
-        <h3>Leaks first, then power</h3>
+      <article class="block" id="day-test" data-start="285" data-end="330">
+        <p class="when">4:15 PM – 5:00 PM</p>
+        <h3>Test</h3>
         <div class="roles">
-          <div class="role"><h4>On the ground</h4><p>Open the meter slowly. Feel the joints. Prime until the water is solid. One faucet open, then plug in, then walk the house and the water heater.</p></div>
-          <div class="role"><h4>On the tower</h4><p>Watch the fill, the float, and the overflow. A running overflow means the float is stuck or the tank was already full.</p></div>
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Open the meter slowly. Feel the joints.</li>
+              <li>Prime until the water is solid.</li>
+              <li>One faucet open, then plug in.</li>
+              <li>Walk the house and the water heater.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>Watch the fill, the float, and the overflow.</li>
+              <li>A running overflow means the float is stuck, or the tank was already full.</li>
+            </ul>
+          </div>
         </div>
         <label class="checkline"><input type="checkbox" data-id="day-test"> Done</label>
       </article>
-      <article class="block" id="day-close" data-start="465" data-end="480">
-        <p class="when">Last half hour</p>
-        <h3>Label it and stop</h3>
-        <p>Do the shortcut drill once, then put it back. Unplug the pump. Close the valve on the pump's way out. Open the shortcut. Confirm a faucet still runs. Then close the shortcut, open the valve on the pump's way out, and plug the pump back in.</p>
-        <p>Tape labels. Photograph them. If you still have light, leave the shortcut closed, the pump plugged in, and one faucet proven. If the light is going, skip the polish: unplug the pump, close the valve on the pump's way out, open the shortcut, and go inside.</p>
+      <article class="block" id="day-close" data-start="330" data-end="360">
+        <p class="when">5:00 PM – 5:30 PM</p>
+        <h3>Last half hour</h3>
+        <div class="roles">
+          <div class="role">
+            <h4>Ground</h4>
+            <ul>
+              <li>Unplug the pump. Close the valve on the pump's way out. Open the shortcut.</li>
+              <li>Confirm a faucet still runs.</li>
+              <li>Close the shortcut, open that valve, and plug the pump back in.</li>
+              <li>Tape labels. Photograph them.</li>
+            </ul>
+          </div>
+          <div class="role">
+            <h4>Tower</h4>
+            <ul>
+              <li>If you still have light: shortcut closed, pump plugged in, one faucet proven.</li>
+              <li>If the light is going: unplug the pump, close the valve on the pump's way out, open the shortcut, and go inside.</li>
+            </ul>
+          </div>
+        </div>
         <label class="checkline"><input type="checkbox" data-id="day-close"> Done</label>
       </article>
     </section>
@@ -1237,14 +1382,14 @@
 <template id="toc-day">
   <a href="#day-roles" data-tab="day">Who does what</a>
   <a href="#day-hours" data-tab="day">The hours</a>
-  <a href="#day-decide" data-tab="day">Decide before anyone cuts</a>
-  <a href="#day-store" data-tab="day">Hardware store</a>
   <a href="#day-setup" data-tab="day">Clear the front yard</a>
+  <a href="#day-store" data-tab="day">Hardware store</a>
+  <a href="#day-decide" data-tab="day">Go or no-go</a>
   <a href="#day-build-block" data-tab="day">Assemble it</a>
   <a href="#day-eat" data-tab="day">Eat, then walk the arrows</a>
-  <a href="#day-cut" data-tab="day">Tie it in</a>
-  <a href="#day-test" data-tab="day">Leaks first, then power</a>
-  <a href="#day-close" data-tab="day">Label it and stop</a>
+  <a href="#day-cut" data-tab="day">Water off</a>
+  <a href="#day-test" data-tab="day">Test</a>
+  <a href="#day-close" data-tab="day">Last half hour</a>
 </template>
 <template id="toc-build">
   <a href="#build-flow" data-tab="build">Follow the water</a>
@@ -1320,7 +1465,8 @@
       var on = units[btn.dataset.unitGroup] === btn.dataset.unit;
       btn.setAttribute("aria-pressed", on ? "true" : "false");
     });
-    if (!document.getElementById("start-time").value) document.getElementById("start-time").value = "07:00";
+    var startEl = document.getElementById("start-time");
+    if (!startEl.value || startEl.value === "07:00") startEl.value = "11:30";
   }
 
   function showToc(id) {
@@ -1510,16 +1656,20 @@
     return hr + ":" + String(m).padStart(2, "0") + " " + ap;
   }
   function schedule() {
-    var v = document.getElementById("start-time").value || "07:00";
+    var v = document.getElementById("start-time").value || "11:30";
     var bits = v.split(":");
     var base = (parseInt(bits[0], 10) || 0) * 60 + (parseInt(bits[1], 10) || 0);
+    var last = 0;
     document.querySelectorAll(".block").forEach(function (block) {
+      var endOffset = parseInt(block.dataset.end, 10);
+      if (endOffset > last) last = endOffset;
       var a = base + parseInt(block.dataset.start, 10);
-      var b = base + parseInt(block.dataset.end, 10);
+      var b = base + endOffset;
       block.querySelector(".when").textContent = fmtClock(a) + " – " + fmtClock(b);
     });
-    document.getElementById("end-line").textContent = "Done around " + fmtClock(base + 480) + " if the first hour really starts at " + fmtClock(base) + ".";
-    var cut = base + 330;
+    document.getElementById("end-line").textContent = "Done around " + fmtClock(base + last) + " if you start at " + fmtClock(base) + ".";
+    var cutBlock = document.getElementById("day-cut");
+    var cut = base + parseInt(cutBlock.dataset.start, 10);
     var late = document.getElementById("late-line");
     if (cut >= 15 * 60 + 30) {
       late.hidden = false;
