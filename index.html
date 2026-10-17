@@ -383,8 +383,11 @@
   .stop { margin: 10px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--bad); max-width: 68ch; }
   .who { display: block; margin-bottom: 2px; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
   .steps { margin: 0; padding-left: 1.2em; }
-  .steps > li { margin: 16px 0; padding-left: 4px; }
+  .steps > li { margin: 28px 0; padding-left: 4px; }
+  .steps h3 { margin: 0 0 6px; }
   .steps li.hot { border-left: 2px solid var(--line); padding-left: 12px; margin-left: -4px; }
+  .step-shots { display: grid; gap: 12px; margin: 10px 0 4px; }
+  .step-shots .explain-fig { margin: 0; }
   details.trouble { border-top: 1px solid var(--line); }
   details.trouble:last-of-type { border-bottom: 1px solid var(--line); }
   details.trouble summary { min-height: 52px; padding: 14px 0; font-size: 17px; font-weight: 600; cursor: pointer; }
@@ -396,6 +399,7 @@
   @media (min-width: 700px) {
     .sizes { grid-template-columns: 1fr 1fr; }
     .roles { grid-template-columns: 1fr 1fr; }
+    .step-shots { grid-template-columns: 1fr 1fr; }
   }
   @media (min-width: 961px) {
     #toc-details > summary { pointer-events: none; margin-bottom: 4px; }
@@ -1146,54 +1150,145 @@
       </table>
 
       <h2 id="build-order">Order of work</h2>
+      <p>Water stays on until the meter step. Do these in this order. The clock is on Day.</p>
       <ol class="steps">
         <li>
           <span class="who">Both · water still on</span>
           <h3>Measure, photograph, test the valve</h3>
-          <p>Height, gauge, pipe sizes, outlet test. Bucket under the tank valve.</p>
+          <p>Height to the inlet. Gauge on a hose bibb, other taps closed. Photos of the meter outlet, the house pipe, the inlet, the bottom valve, the lid, and the electrical outlet. Press Test on that outlet, then Reset.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/01-measure.jpg" alt="A tape runs from the ground up to the tank inlet. A blank pressure gauge is on a hose faucet. One person photographs a pipe fitting.">
+              <figcaption>Write the height and the gauge number down. The photos are what you shop with.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/01-valve.jpg" alt="A person stands to the side of a tank valve and lets water fall into a bucket.">
+              <figcaption>Bucket under the tank valve. Crack it from the side. Close it and watch it stop.</figcaption>
+            </figure>
+          </div>
           <p class="stop">Stop if the valve won't seal.</p>
         </li>
         <li>
           <span class="who">Both · water still on</span>
           <h3>Shop with the photos</h3>
-          <p>Match threads to the pump in the store. Read the cement can if you're buying cement.</p>
+          <p>Hold each fitting against the pump. Threads start by hand. If you are buying cement, read the wait on the can before you leave the store.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/02-threads.jpg" alt="A hand holds a brass fitting against a pump port. A phone on the counter shows a photo of a pipe.">
+              <figcaption>Match the threads to the pump, and match the house pipe to the photo.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/02-cement.jpg" alt="A hand turns a blank purple can around beside a blank blue can. Both have brush caps.">
+              <figcaption>If the can wants hours, buy a threaded or push joint for anything that has to hold water today.</figcaption>
+            </figure>
+          </div>
         </li>
         <li>
           <span class="who">Ground · water still on</span>
           <h3>Set the pump</h3>
-          <p>Paver, shelter, short fall from the tank, cord with a drip loop to an outlet that trips.</p>
+          <p>The paver can go down while you clear the yard. The pump goes on it after the store. Under cover, lower than the tank outlet. The pipe falls the whole way.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/03-pad.jpg" alt="A pump sits on a paver under a roof. A pipe slopes downhill from the tank to the pump with no high loop.">
+              <figcaption>Paver, shelter, and a pipe that only falls. A high loop traps air.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/03-cord.jpg" alt="A pump cord dips in a U below an outdoor outlet, then rises into the plug. The outlet has two buttons.">
+              <figcaption>Drip loop, then an outlet that trips. Water should not run down the cord into the plug.</figcaption>
+            </figure>
+          </div>
         </li>
         <li>
           <span class="who">Tower · water still on</span>
           <h3>Float, overflow, screen, straps</h3>
-          <p>Fill pipe ends above the overflow. Lid on, loose enough to breathe.</p>
+          <p>The fill pipe ends above the overflow, with about two fingers of air. The lid keeps dirt out and does not seal like a drum.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/04-float.jpg" alt="Inside a tank, the fill pipe stops above the water. A float ball hangs near the top. An overflow leaves the side and ends in a coarse screen. The lid sits loose.">
+              <figcaption>Float at the top. Overflow where you can see it, away from the legs and the outlet. Screen on, lid loose.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/04-straps.jpg" alt="Three metal straps clamp a vertical pipe to a tower leg, with slack at the tank fitting.">
+              <figcaption>The tower holds the riser. The tank fitting does not.</figcaption>
+            </figure>
+          </div>
         </li>
         <li>
           <span class="who">Ground · water still on</span>
           <h3>Fit the valves, strainer, shortcut, and flex lines</h3>
-          <p>Tape on threads only. Support the pipes. If a joint is glued, it gets glued now so the wait happens while you do the rest. Flush the tank bottom into a bucket until it runs clearer, then connect the strainer.</p>
+          <p>Tape on threads only. Support the pipes. If a joint is glued, glue it now so the wait happens while you do the rest. The shortcut stays closed.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/05-fit.jpg" alt="A pump with a soft flex hose on each side, a strainer with the cap down, open red valves, and a closed valve on the upper shortcut pipe. A hand wraps tape on threads.">
+              <figcaption>Strainer cap down, arrow toward the pump. Flex lines in a soft bend, not pulled tight.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/05-flush.jpg" alt="Murky water runs from the tank bottom valve into a bucket. A strainer sits beside the bucket, not connected yet.">
+              <figcaption>Flush the tank bottom into a bucket until it runs clearer. Then connect the strainer.</figcaption>
+            </figure>
+          </div>
         </li>
         <li class="hot">
           <span class="who">Both · water off</span>
           <h3>Close the meter and tie in</h3>
           <p>Faucet open until the flow dies. Bucket under the joint. Unscrew if it has threads. Connect the city side and the house side. Cap or close anything still open. The shortcut stays closed. The pump stays unplugged. Tape a note on the meter and tell the house to leave the taps alone.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/06-meter.jpg" alt="The meter valve is closed. A bucket sits under an open joint. A faucet runs a last trickle. The pump cord is unplugged and the shortcut valve is closed.">
+              <figcaption>Meter closed. One person stays there. The other does not open the tank while a pipe is open.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/06-tie.jpg" alt="New pipes are connected. One tee splits city water toward the tank and the shortcut. Another tee joins the pump and the shortcut into the house. The shortcut valve is closed and the pump is unplugged.">
+              <figcaption>City side and house side connected. Nothing left open. Shortcut closed. Pump unplugged.</figcaption>
+            </figure>
+          </div>
           <p class="stop">Stop if you can't see a way to close it back up. Cap the pipe, keep the meter closed, and think.</p>
         </li>
         <li class="hot">
           <span class="who">Both · leak walk</span>
           <h3>Open the meter slowly</h3>
-          <p>One faucet open. Walk every new joint with a dry hand. Watch the tank. If something weeps, close the meter, let it die, then fix it.</p>
+          <p>One faucet open. Walk every new joint with a dry hand. Watch the tank.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/07-open.jpg" alt="A person opens the meter valve slowly. One faucet sputters. A dry hand rests on a dry pipe joint. The tank water line is rising.">
+              <figcaption>Slow open. One faucet so the air has somewhere to go. Dry hand on every new joint.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/07-weep.jpg" alt="One person points at a drip falling from a joint into a bucket. The other person closes the meter valve.">
+              <figcaption>If something weeps, close the meter, let it die, then fix it.</figcaption>
+            </figure>
+          </div>
         </li>
         <li class="hot">
           <span class="who">Ground · power last</span>
           <h3>Prime, then plug in</h3>
           <p>Tank valve and inlet valve open. Prime plug open until solid water comes out, then closed. Open the valve on the pump's way out. One house faucet open, then plug in. Let it spit air, then run steady. Close the faucets and listen. It should stop and stay stopped.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/08-prime.jpg" alt="The plug on top of the pump is off and a solid stream of water comes out. The cord is not plugged in. The valves on both sides of the pump are open.">
+              <figcaption>Solid water out of the prime plug. The cord is still in your hand.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/08-plugin.jpg" alt="The prime plug is closed, the cord is plugged in, and a faucet runs a steady stream into the house.">
+              <figcaption>One faucet open, then plug in. It should run steady, then stop when the faucets close.</figcaption>
+            </figure>
+          </div>
           <p class="stop">Unplug if it runs dry, keeps clicking, or the water heater starts dumping.</p>
         </li>
         <li class="hot">
           <span class="who">Both · the drill</span>
           <h3>Prove the shortcut, then put it back</h3>
           <p>Unplug the pump. Close the valve on the pump's way out. Open the shortcut. Confirm a faucet still runs. Then close the shortcut, open the valve on the pump's way out, and plug the pump back in. Label the shortcut, the tank tap, and the valve on the pump's way out. Photograph the valves.</p>
+          <div class="step-shots">
+            <figure class="explain-fig">
+              <img src="images/order/09-shortcut.jpg" alt="The pump is unplugged and the valve on its outlet is closed. Water flows through the upper shortcut pipe into the house, and a faucet runs.">
+              <figcaption>Unplug first. Close the valve on the pump's way out. Then open the shortcut. A faucet still runs.</figcaption>
+            </figure>
+            <figure class="explain-fig">
+              <img src="images/order/09-labels.jpg" alt="Three valves each have a blank tag. A phone photographs them. The pump is plugged back in.">
+              <figcaption>Put it back: shortcut closed, that valve open, pump plugged in. Tag the three valves and photograph them.</figcaption>
+            </figure>
+          </div>
         </li>
       </ol>
 

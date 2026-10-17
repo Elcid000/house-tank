@@ -15,13 +15,13 @@ Checkboxes and the height/pressure calculator save in the browser (`localStorage
 - **Plan** — why the tank, the two taps, reach calculator, six gates before the meter closes
 - **Buy** — sizes, what to say at the counter, checklist with a photo of each part
 - **Day** — clock blocks that start at 11:30, roles, store, go or no-go
-- **Build** — water path on one schematic, order of work, valve positions
+- **Build** — water path on one schematic, order of work with two pictures per step, valve positions
 - **Safety**
 - **Trouble**
 
 ## Last change
 
-Day tab is clock blocks starting at 11:30. Before that, the plug-in low-water float was spelled out as only needed when the pump has no dry-run protection.
+Order of work on Build has two pictures per step, in `images/order/`. Water stays on until the meter step. The clock is still on Day.
 
 ## Open
 
