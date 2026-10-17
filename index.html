@@ -90,66 +90,30 @@
     padding: 10px 0;
     min-height: 44px;
   }
-  .flow h3 { margin: 0 0 8px; font-size: 22px; }
-  .flow-list { list-style: none; margin: 0; padding: 0; }
-  .flow-step { min-width: 0; }
-  .flow-list li.flow-step + li.flow-step {
-    position: relative;
-    margin-top: 26px;
+  .flow-fig { margin: 14px 0 6px; }
+  .flow-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .flow-svg { display: block; width: 100%; height: auto; max-height: calc(100vh - var(--bar) - 48px); }
+  .flow-svg text { font-family: var(--sans); font-size: 12.5px; fill: var(--ink); }
+  .flow-svg .n { font-weight: 600; }
+  .flow-svg .s { font-size: 11.5px; fill: var(--muted); }
+  .flow-svg .ok { fill: var(--good); font-weight: 600; }
+  .flow-svg .no { fill: var(--bad); font-weight: 600; }
+  .flow-svg .big { font-family: var(--serif); font-size: 19px; font-weight: 600; }
+  .flow-svg .water { fill: none; stroke: var(--link); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .flow-svg .spare { fill: none; stroke: #a3a3a3; stroke-width: 3; stroke-dasharray: 7 6; stroke-linecap: round; stroke-linejoin: round; }
+  .flow-svg .lead { fill: none; stroke: #b5b5b5; stroke-width: 1; }
+  .flow-svg .chev { fill: none; stroke: var(--link); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .flow-svg .chev.g { stroke: #a3a3a3; }
+  .flow-svg .part { fill: #fff; stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+  .flow-svg .v-open { fill: #fff; stroke: var(--good); stroke-width: 1.8; stroke-linejoin: round; }
+  .flow-svg .v-shut { fill: #f6e3e2; stroke: var(--bad); stroke-width: 1.8; stroke-linejoin: round; }
+  .flow-svg .maybe { fill: #fff; stroke: var(--faint); stroke-width: 1.2; stroke-dasharray: 3 3; }
+  .flow-after { color: var(--muted); font-size: 15px; max-width: 68ch; }
+  .flow-swipe { display: none; color: var(--faint); font-size: 13px; margin: 4px 0 0; }
+  @media (max-width: 720px) {
+    .flow-svg { min-width: 660px; max-height: none; }
+    .flow-swipe { display: block; }
   }
-  .flow-list li.flow-step + li.flow-step::before {
-    content: "";
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    height: 14px;
-    border-left: 1px solid #b5b5b5;
-  }
-  .flow-list li.flow-step + li.flow-step::after {
-    content: "";
-    position: absolute;
-    top: -8px;
-    left: calc(50% - 4px);
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 6px solid #8a8a8a;
-  }
-  .flow-step.has-aside {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: 10px 14px;
-    align-items: start;
-  }
-  .flow-list li.flow-step.has-aside + li.flow-step::before { left: 28%; }
-  .flow-list li.flow-step.has-aside + li.flow-step::after { left: calc(28% - 4px); }
-  .flow-node {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 10px 12px 12px;
-    background: #fff;
-    break-inside: avoid;
-  }
-  .flow-node.is-maybe { border-style: dashed; }
-  .flow-top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 2px 12px;
-    align-items: baseline;
-  }
-  .flow-name { margin: 0; font-weight: 650; }
-  .flow-tag { margin: 0; font-size: 12px; font-weight: 600; color: var(--muted); }
-  .flow-job, .flow-join { margin: 4px 0 0; font-size: 15px; }
-  .flow-job { color: var(--muted); }
-  .flow-kicker {
-    margin: 0 0 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .flow-aside { min-width: 0; }
-  .flow-aside .flow-node { border-style: dashed; }
-  .flow .note { margin: 0 0 8px; }
   table.buy { table-layout: fixed; }
   table.buy col.col-check { width: 78px; }
   table.buy col.col-name { width: 276px; }
@@ -851,40 +815,134 @@
       <p class="lede">You are building two paths. One fills the tank. One goes from the tank, through the pump, into the house. A third pipe skips the pump, and its tap stays closed until the pump is unplugged.</p>
 
       <h2 id="build-flow">Follow the water</h2>
-      <p>City water climbs into the tank. The pump pushes it to the house. The backup pipe leaves at the tee and comes back at the joining tee. That tap stays closed while the pump is plugged in.</p>
-      <p>The four ball valves are the tank tap, the inlet valve, the valve on the way out, and the backup tap. The two tees are the split and the join. The two flex lines are the soft bends on either side of the pump.</p>
-      <p class="note">A green Open is how that tap sits on a normal day. A red Closed is how the backup tap sits. Already there means the house or your sketch already has it. A dashed box is a branch, or a part you add only if the pump box has no one-way valve of its own.</p>
-      <div class="flow" id="flow-root"></div>
-      <script type="text/plain" id="flow-src">
-flowchart TD
-%% section From the meter
-meter["Meter valve<br/>Close this for the tie-in. Leave the meter itself alone."]:::have --> check["One-way valve<br/>Arrow points away from the meter. On a swing check, the hinge sits on top."]:::add
-check --> split["Tee<br/>One pipe climbs to the tank. The other skips the pump."]:::add
-split -.->|Skips the pump| bypass["Backup tap<br/>Closed on a normal day. Unplug the pump, close the valve on the way out, then open this tap."]:::shut
-%% section Up to the tank
-split --> tap["Tank tap<br/>Open, the tank fills. Closed, it does not. The store calls this a fill valve."]:::ball
-%% note If the calculator says the city line cannot reach, a smaller pump sits on this climb, with a float switch, a one-way valve whose arrow points toward the tank, and two flex lines. That pump fills the tank.
-tap --> riser["Riser<br/>Strap it to the tower. Two easy bends beat one sharp elbow."]:::have
-riser --> float["Float valve<br/>It shuts the fill while the water is still below the overflow."]:::add
-float --> gap["Air gap<br/>The pipe stops above the water, about two finger-widths."]:::gap
-gap --> tank["Tank<br/>Lid on, loose enough to breathe."]:::have
-tank -.->|Only if the float sticks| over["Overflow<br/>As big as the fill, with a coarse screen. Aim it where you can see it, away from the legs and the plug."]:::add
-%% section Out of the tank, through the pump
-%% note On a normal day the backup tap is closed. The house gets this water.
-tank --> bottom["Bottom valve<br/>Open. You proved it shuts, with a bucket, from the side."]:::have
-bottom --> downpipe["Pipe down from the tank<br/>As fat as the pump inlet the whole way. It falls steadily, with no high loop."]:::add
-downpipe --> inlet["Inlet valve<br/>Open. Close it to clean the strainer without climbing."]:::ball
-inlet --> strainer["Strainer<br/>Arrow toward the pump. Cap hangs down."]:::add
-strainer --> flexIn["Flex line<br/>A soft bend into the pump."]:::add
-flexIn --> pump["Pump<br/>On the paver, below the tank. Off, water stops here. Plug it in after it is full of water, on an outlet that trips. If the box is quiet about running dry, the pump plugs into a float switch that hangs in the tank."]:::have
-pump --> ctrl["Controller<br/>Stand it the way the box draws. Arrow toward the house."]:::have
-ctrl --> extra["One-way valve at the pump<br/>Arrow toward the house."]:::maybe
-extra --> outv["Valve on the way out<br/>Open while the pump is plugged in. Close it before you open the backup tap."]:::ball
-outv --> flexOut["Flex line<br/>A soft bend leaving the pump."]:::add
-flexOut --> join["Joining tee<br/>One reduction is allowed here if the house pipe is smaller."]:::add
-join --> house["House<br/>The tie-in is a coupling you can undo."]:::have
-bypass -.->|The backup pipe comes back in here| join
-      </script>
+      <p>City water climbs to the tank. The pump pushes tank water to the house. The dashed pipe skips the pump, and its tap stays closed until the pump is unplugged.</p>
+      <figure class="flow-fig">
+        <div class="flow-scroll">
+        <svg class="flow-svg" viewBox="0 0 740 552" role="img" aria-labelledby="flow-title flow-desc">
+          <title id="flow-title">Where the water goes, and every part it passes</title>
+          <desc id="flow-desc">City water passes the meter valve and a one-way valve, then splits at a tee. One pipe climbs past the open tank tap and up the riser, and ends above the water in the tank with a float valve and an air gap. An overflow leaves the side of the tank. Tank water leaves through the open bottom valve, down a full-size pipe, through the open inlet valve, the strainer, a flex line, the pump and controller, a flex line, an optional one-way valve, the open outlet valve, and the joining tee, into the house. The backup pipe runs from the split to the joining tee, with a backup tap that is closed on a normal day.</desc>
+          <defs>
+            <path id="fv" d="M-9,-7 L9,7 L9,-7 L-9,7 Z M0,0 V-13 M-5,-13 H5"/>
+            <path id="fc" d="M-8,-7 L5,0 L-8,7 Z M7,-8 V8"/>
+            <path id="fa" d="M-4,-5 L2,0 L-4,5"/>
+          </defs>
+
+          <!-- pipes -->
+          <path class="spare" d="M170,500 H650 V384"/>
+          <path class="water" d="M10,500 H170 V50 H300 V100"/>
+          <path class="water" d="M290,200 V380 H422"/>
+          <path class="water" d="M422,380 c4,-7 8,-7 12,0 s8,7 12,0 s8,-7 11,0"/>
+          <path class="water" d="M493,380 c4,-7 8,-7 12,0 s8,7 12,0 s8,-7 12,0 H690"/>
+          <path d="M420,100 H478 V136" fill="none" stroke="#8a8a8a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- flow arrows -->
+          <use href="#fa" class="chev" transform="translate(140,500)"/>
+          <use href="#fa" class="chev" transform="translate(170,250) rotate(-90)"/>
+          <use href="#fa" class="chev" transform="translate(236,50)"/>
+          <use href="#fa" class="chev" transform="translate(290,330) rotate(90)"/>
+          <use href="#fa" class="chev" transform="translate(375,380)"/>
+          <use href="#fa" class="chev" transform="translate(625,380)"/>
+          <use href="#fa" class="chev" transform="translate(674,380)"/>
+          <use href="#fa" class="chev g" transform="translate(290,500)"/>
+          <use href="#fa" class="chev g" transform="translate(590,500)"/>
+          <use href="#fa" class="chev g" transform="translate(650,450) rotate(-90)"/>
+
+          <!-- tank -->
+          <rect x="260" y="80" width="160" height="120" rx="6" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/>
+          <path d="M261,125 H419 V194 a5,5 0 0 1 -5,5 H266 a5,5 0 0 1 -5,-5 Z" fill="#e7eef6"/>
+          <path d="M261,125 H419" stroke="#9db6e6" stroke-width="1"/>
+          <path class="water" d="M300,78 V100"/>
+          <path d="M300,102 L338,119" stroke="#1a1a1a" stroke-width="1.3"/>
+          <circle cx="344" cy="121" r="6" class="part"/>
+          <path d="M292,104 V122 M288,104 H296 M288,122 H296" stroke="#8a8a8a" stroke-width="1"/>
+          <text class="big" x="352" y="168" text-anchor="middle">Tank</text>
+          <text class="s" x="352" y="185" text-anchor="middle">lid on, not sealed</text>
+
+          <!-- tower labels -->
+          <path class="lead" d="M254,113 H286"/>
+          <text class="n" x="250" y="110" text-anchor="end">Air gap</text>
+          <text class="s" x="250" y="124" text-anchor="end">2 fingers</text>
+          <path class="lead" d="M436,64 L350,116"/>
+          <text class="n" x="440" y="58">Float valve</text>
+          <text class="s" x="440" y="72">shuts the fill when full</text>
+          <text class="n" x="486" y="140">Overflow</text>
+          <text class="s" x="486" y="154">runs only if the float sticks</text>
+          <text class="n" x="156" y="168" text-anchor="end">Riser</text>
+          <text class="s" x="156" y="182" text-anchor="end">strapped to the tower</text>
+
+          <use href="#fv" class="v-open" transform="translate(170,330) rotate(90)"/>
+          <text class="n" x="152" y="326" text-anchor="end">Tank tap</text>
+          <text class="s" x="152" y="340" text-anchor="end"><tspan class="ok">Open</tspan> · fills the tank</text>
+
+          <use href="#fv" class="v-open" transform="translate(290,240) rotate(90)"/>
+          <text class="n" x="272" y="236" text-anchor="end">Bottom valve</text>
+          <text class="s ok" x="272" y="250" text-anchor="end">Open</text>
+          <text class="s" x="302" y="298">Full-size pipe,</text>
+          <text class="s" x="302" y="312">falls the whole way</text>
+
+          <!-- pump row -->
+          <use href="#fv" class="v-open" transform="translate(345,380)"/>
+          <text class="n" x="345" y="410" text-anchor="middle">Inlet valve</text>
+          <text class="s ok" x="345" y="424" text-anchor="middle">Open</text>
+
+          <rect x="395" y="373" width="20" height="14" rx="3" class="part"/>
+          <path d="M403,387 L411,398" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+          <text class="n" x="405" y="340" text-anchor="middle">Strainer</text>
+          <text class="s" x="405" y="354" text-anchor="middle">cap down</text>
+
+          <circle cx="475" cy="380" r="18" class="part"/>
+          <path d="M468,370 L486,380 L468,390 Z" fill="#1a1a1a"/>
+          <text class="n" x="475" y="416" text-anchor="middle">Pump + controller</text>
+          <text class="s" x="475" y="430" text-anchor="middle">flex line each side</text>
+
+          <rect x="533" y="366" width="24" height="28" rx="4" class="maybe"/>
+          <use href="#fc" class="part" transform="translate(545,380)"/>
+          <text class="n" x="545" y="340" text-anchor="middle">One-way valve</text>
+          <text class="s" x="545" y="354" text-anchor="middle">if the box has none</text>
+
+          <use href="#fv" class="v-open" transform="translate(600,380)"/>
+          <text class="n" x="600" y="410" text-anchor="middle">Outlet valve</text>
+          <text class="s ok" x="600" y="424" text-anchor="middle">Open</text>
+
+          <circle cx="650" cy="380" r="4.5" fill="#3568d4"/>
+          <text class="n" x="650" y="354" text-anchor="middle">Joining tee</text>
+
+          <path d="M690,393 V376 L705,364 L720,376 V393 Z" class="part"/>
+          <text class="n" x="705" y="412" text-anchor="middle">House</text>
+
+          <!-- city row -->
+          <rect x="28" y="489" width="24" height="22" rx="4" class="part"/>
+          <circle cx="40" cy="500" r="5" fill="none" stroke="#1a1a1a" stroke-width="1.2"/>
+          <text class="n" x="40" y="476" text-anchor="middle">Meter valve</text>
+
+          <use href="#fc" class="part" transform="translate(105,500)"/>
+          <text class="n" x="105" y="528" text-anchor="middle">One-way valve</text>
+          <text class="s" x="105" y="542" text-anchor="middle">arrow away from meter</text>
+
+          <circle cx="170" cy="500" r="4.5" fill="#3568d4"/>
+          <text class="s" x="180" y="490">the split</text>
+
+          <use href="#fv" class="v-shut" transform="translate(410,500)"/>
+          <text class="s" x="500" y="491" text-anchor="middle">backup pipe</text>
+          <text class="n" x="410" y="528" text-anchor="middle">Backup tap</text>
+          <text class="s" x="410" y="542" text-anchor="middle"><tspan class="no">Closed</tspan> · open only after the pump is unplugged</text>
+
+          <!-- key -->
+          <path class="water" d="M520,204 H546"/>
+          <text class="s" x="556" y="208">Water on a normal day</text>
+          <path class="spare" d="M520,228 H546"/>
+          <text class="s" x="556" y="232">Backup pipe</text>
+          <use href="#fv" class="v-open" transform="translate(533,258)"/>
+          <text class="s" x="556" y="262">Open</text>
+          <use href="#fv" class="v-shut" transform="translate(612,258)"/>
+          <text class="s" x="634" y="262">Closed</text>
+          <rect x="522" y="274" width="22" height="20" rx="4" class="maybe"/>
+          <text class="s" x="556" y="288">Only if needed</text>
+        </svg>
+        </div>
+        <p class="flow-swipe">Swipe sideways to see the whole line.</p>
+      </figure>
+      <p class="flow-after">If the calculator says city water cannot reach, a small fill pump goes on the climb, with its own float switch and a one-way valve pointing up. The tables below say what each part does.</p>
 
       <h2 id="build-city">City side</h2>
       <table class="sheet">
@@ -1509,180 +1567,6 @@ bypass -.->|The backup pipe comes back in here| join
     writeClipboard(text, btn);
   }
 
-  function renderFlow() {
-    var srcEl = document.getElementById("flow-src");
-    var root = document.getElementById("flow-root");
-    if (!srcEl || !root) return;
-    var tags = {
-      have: "Already there",
-      add: "Add this",
-      ball: "Add this",
-      shut: "Add this",
-      maybe: "If the box has none",
-      gap: "Leave this"
-    };
-    var nodes = {};
-    var edges = [];
-    var pendingSection = null;
-    var pendingNote = null;
-
-    function define(id, name, job, cls) {
-      var n = nodes[id];
-      var isNew = !n || !n.defined;
-      if (!n) {
-        n = { id: id, rejoins: [], asides: [] };
-        nodes[id] = n;
-      }
-      n.name = name;
-      n.job = job;
-      n.cls = cls || "add";
-      if (isNew) {
-        if (pendingSection) { n.section = pendingSection; pendingSection = null; }
-        if (pendingNote) { n.note = pendingNote; pendingNote = null; }
-      }
-      n.defined = true;
-    }
-
-    srcEl.textContent.split("\n").forEach(function (line) {
-      var section = line.match(/^\s*%%\s*section\s+(.+?)\s*$/);
-      if (section) { pendingSection = section[1]; return; }
-      var note = line.match(/^\s*%%\s*note\s+(.+?)\s*$/);
-      if (note) { pendingNote = note[1]; return; }
-      if (/^\s*%%/.test(line) || /^\s*flowchart\b/.test(line) || !line.trim()) return;
-      var nodeRe = /([A-Za-z_][\w]*)\s*\[\s*"([^"]*)"\s*\](?::::(\w+))?/g;
-      var stripped = line.replace(nodeRe, function (_, id, text, cls) {
-        var parts = text.split(/<br\s*\/?>/i);
-        var name = (parts.shift() || id).trim();
-        define(id, name, parts.join(" ").trim(), cls || "add");
-        return " " + id + " ";
-      });
-      var edgeRe = /([A-Za-z_][\w]*)\s*(-->|-\.->)\s*(?:\|([^|]*)\|\s*)?([A-Za-z_][\w]*)/g;
-      var em;
-      while ((em = edgeRe.exec(stripped))) {
-        edges.push({
-          from: em[1],
-          to: em[4],
-          kind: em[2] === "-->" ? "solid" : "dotted",
-          label: (em[3] || "").trim()
-        });
-      }
-    });
-
-    var solidOut = {};
-    var solidIn = {};
-    var dotted = [];
-    edges.forEach(function (e) {
-      if (e.kind === "solid") {
-        solidOut[e.from] = e.to;
-        solidIn[e.to] = e.from;
-      } else dotted.push(e);
-    });
-    var chain = [];
-    var onChain = {};
-    var start = null;
-    Object.keys(nodes).forEach(function (id) {
-      if (nodes[id].defined && !solidIn[id] && solidOut[id]) start = id;
-    });
-    var guard = 0;
-    while (start && !onChain[start] && guard < 40) {
-      chain.push(start);
-      onChain[start] = true;
-      start = solidOut[start];
-      guard++;
-    }
-    dotted.forEach(function (e) {
-      if (!nodes[e.from] || !nodes[e.to]) return;
-      if (onChain[e.to] && !onChain[e.from] && e.label) nodes[e.to].rejoins.push(e.label);
-      else if (onChain[e.from] && !onChain[e.to]) nodes[e.from].asides.push({ node: nodes[e.to], label: e.label });
-    });
-
-    function fillJob(p, job) {
-      var re = /\b(Open|Closed)\b/g;
-      var last = 0;
-      var m;
-      var any = false;
-      while ((m = re.exec(job))) {
-        any = true;
-        if (m.index > last) p.appendChild(document.createTextNode(job.slice(last, m.index)));
-        var strong = document.createElement("strong");
-        strong.className = m[1] === "Open" ? "pos-open" : "pos-shut";
-        strong.textContent = m[1];
-        p.appendChild(strong);
-        last = m.index + m[1].length;
-      }
-      if (!any) p.textContent = job;
-      else if (last < job.length) p.appendChild(document.createTextNode(job.slice(last)));
-    }
-    function nodeEl(n) {
-      var box = document.createElement("div");
-      box.className = "flow-node" + (n.cls === "maybe" ? " is-maybe" : "");
-      var top = document.createElement("div");
-      top.className = "flow-top";
-      var name = document.createElement("p");
-      name.className = "flow-name";
-      name.textContent = n.name;
-      var tag = document.createElement("p");
-      tag.className = "flow-tag";
-      tag.textContent = tags[n.cls] || "Add this";
-      top.appendChild(name);
-      top.appendChild(tag);
-      box.appendChild(top);
-      (n.rejoins || []).forEach(function (label) {
-        var join = document.createElement("p");
-        join.className = "flow-join";
-        join.textContent = label;
-        box.appendChild(join);
-      });
-      if (n.job) {
-        var job = document.createElement("p");
-        job.className = "flow-job";
-        fillJob(job, n.job);
-        box.appendChild(job);
-      }
-      return box;
-    }
-
-    var list = document.createElement("ol");
-    list.className = "flow-list";
-    list.setAttribute("aria-label", "Parts in the order the water passes them");
-    chain.forEach(function (id) {
-      var n = nodes[id];
-      var li = document.createElement("li");
-      li.className = "flow-step";
-      var main = document.createElement("div");
-      main.className = "flow-main";
-      if (n.section) {
-        var h = document.createElement("h3");
-        h.id = "flow-" + n.section.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-        h.textContent = n.section;
-        main.appendChild(h);
-      }
-      if (n.note) {
-        var note = document.createElement("p");
-        note.className = "note";
-        note.textContent = n.note;
-        main.appendChild(note);
-      }
-      main.appendChild(nodeEl(n));
-      li.appendChild(main);
-      if (n.asides && n.asides.length) li.classList.add("has-aside");
-      (n.asides || []).forEach(function (a) {
-        var aside = document.createElement("div");
-        aside.className = "flow-aside";
-        if (a.label) {
-          var k = document.createElement("p");
-          k.className = "flow-kicker";
-          k.textContent = a.label;
-          aside.appendChild(k);
-        }
-        if (a.node) aside.appendChild(nodeEl(a.node));
-        li.appendChild(aside);
-      });
-      list.appendChild(li);
-    });
-    root.appendChild(list);
-  }
-
   function refresh() {
     calc();
     gates();
@@ -1738,7 +1622,6 @@ bypass -.->|The backup pipe comes back in here| join
     hits.hidden = false;
   }
 
-  renderFlow();
   applySaved();
   var startTab = state.tab || "plan";
   if (!document.getElementById(startTab)) startTab = "plan";
